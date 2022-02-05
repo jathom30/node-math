@@ -80,7 +80,7 @@ export const NodeInputs = () => {
         </FlexBox>
         <FlexBox flexDirection='column' gap="0.25rem">
           <h3>Daily earnings at current price (USD)</h3>
-          <p className='NodeInputs__box'>{toCurrency(currentPrice * daily)}</p>
+          <p className='NodeInputs__box'>{toCurrency(currentPrice * daily * nodecount)}</p>
         </FlexBox>
         </>
         }
