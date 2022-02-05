@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SingleValue } from 'react-select'
 import { TokenSearch } from 'components';
 import { TokenSearchResult } from 'types';
@@ -13,9 +13,9 @@ function App() {
     setTokenId(token?.id)
   }
 
-  const handleClearToken = () => {
-    setTokenId(undefined)
-  }
+  // const handleClearToken = () => {
+  //   setTokenId(undefined)
+  // }
 
   return (
     <div className="App">
