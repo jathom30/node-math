@@ -1,0 +1,31 @@
+.TokenDisplay {
+  &__clear-btn {
+    border-radius: 50%;
+    border: none;
+    background: lightgrey;
+    color: white;
+    height: 1.5rem;
+    width: 1.5rem;
+    cursor: pointer;
+    &:hover {
+      background: darkgrey;
+    }
+  }
+  &__money-bar {
+    height: 1rem;
+    width: 100%;
+    background: linear-gradient(to right, orange, yellow, lightgreen);
+    border-radius: 1rem;
+    overflow: hidden;
+    position: relative;
+  }
+  &__filled-bar {
+    background: lightgrey;
+    height: 100%;
+    right: 0;
+    position: absolute;
+  }
+  &__minmax-price {
+    font-size: 0.75rem;
+  }
+}

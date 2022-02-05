@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { SingleValue } from 'react-select'
+import { TokenSearch } from 'components';
+import { TokenSearchResult } from 'types';
 import './App.css';
+import { TokenDisplay, FlexBox } from 'components';
+import { NodeInputs } from 'components/NodeInputs';
 
 function App() {
+  const [tokenId, setTokenId] = useState<string>()
+
+  const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
+    setTokenId(token?.id)
+  }
+
+  const handleClearToken = () => {
+    setTokenId(undefined)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <FlexBox gap="1rem" flexDirection='column'>
+        {!tokenId ? (
+          <TokenSearch onChange={handleSelectToken} />
+        ) : (
+          <>
+            <TokenDisplay tokenId={tokenId} onClearTokenId={() => setTokenId(undefined)} />
+            <NodeInputs />
+          </>
+        )}
+      </FlexBox>
     </div>
   );
 }
 
 export default App;
+
+
+// Order: token cost, then node cost (number of tokens), starting node count (default 1), daily rewards

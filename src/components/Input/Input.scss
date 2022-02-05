@@ -1,0 +1,30 @@
+.Input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  &__label {
+    font-size: 0.75rem;
+    font-weight: bold;
+  }
+  &__container {
+    position: relative;
+  }
+  &__input {
+    width: 100%;
+    padding: 0.35rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid lightgrey;
+    position: relative;
+  }
+  &__dot {
+    position: absolute;
+    width: 0.5rem;
+    height: 0.5rem;
+    background: green;
+    border-radius: 50%;
+    right: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

@@ -1,5 +1,14 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin: 0;
+}
+
 .App {
-  text-align: center;
+  padding: 2rem;
 }
 
 .App-logo {

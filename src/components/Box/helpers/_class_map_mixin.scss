@@ -1,0 +1,27 @@
+// $propertiesMap example:
+// $properties: (
+//   "display": ("flex","grid"),
+//   "flex-wrap": ("wrap","nowrap","wrap-reverse"),
+// )
+
+// mixin would output to:
+// &--display-flex {
+//   display: flex;
+// }
+// &--display-grid {
+//   display: grid;
+// }
+// &--flex-wrap-wrap {
+//   flex-wrap: wrap;
+// }
+// etc
+
+@mixin createPropertyClasses($propertiesMap) {
+  @each $property, $options in $propertiesMap {
+    @each $option in $options {
+      &--#{$property}-#{$option} {
+        #{$property}: #{$option};
+      }
+    }
+  }
+}
