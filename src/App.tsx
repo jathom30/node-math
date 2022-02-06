@@ -13,9 +13,9 @@ function App() {
     setTokenId(token?.id)
   }
 
-  // const handleClearToken = () => {
-  //   setTokenId(undefined)
-  // }
+  const handleClearToken = () => {
+    setTokenId(undefined)
+  }
 
   return (
     <div className="App">
@@ -24,7 +24,7 @@ function App() {
           <TokenSearch onChange={handleSelectToken} />
         ) : (
           <>
-            <TokenDisplay tokenId={tokenId} onClearTokenId={() => setTokenId(undefined)} />
+            <TokenDisplay tokenId={tokenId} onClearTokenId={handleClearToken} />
             <NodeInputs />
           </>
         )}

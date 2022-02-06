@@ -62,7 +62,12 @@ export const NodeInputs = () => {
         {step > 1 && (
           <FlexBox flexDirection='column' gap="0.25rem">
             <h3>Current node purchase price (USD)</h3>
-            <p className='NodeInputs__box'>{toCurrency(nodeBuyInPrice)}</p>
+            <div className="NodeInputs__box">
+              <p><span>({nodecost} tokens per node)</span> {toCurrency(nodeBuyInPrice)}</p>
+              <p><span>(nodes)</span> x {nodecount}</p>
+              <div className='NodeInputs__seperator' />
+              <p>{toCurrency(nodeBuyInPrice * nodecount)}</p>
+            </div>
           </FlexBox>
         )}
         {step > 1 && <Input

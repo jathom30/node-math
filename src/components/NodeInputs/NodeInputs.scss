@@ -5,6 +5,19 @@
     border-radius: 0.5rem;
     font-family: "Courier New", Courier, monospace;
     font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+    span {
+      color: grey;
+    }
+  }
+  &__seperator {
+    width: 100%;
+    height: 1px;
+    border-radius: 1rem;
+    background: black;
   }
   &__btn {
     padding: 0.5rem;
