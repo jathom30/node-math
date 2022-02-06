@@ -30,6 +30,7 @@ export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchRes
         getOptionValue={(option: TokenSearchResult) => option.id}
         options={searchQuery.data?.data.coins}
         onChange={(newToken) => onChange(newToken)}
+        menuPortalTarget={document.body}
       />
     </div>
   )

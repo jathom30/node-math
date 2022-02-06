@@ -5,26 +5,28 @@ import { TokenSearchResult } from 'types';
 import './App.css';
 import { TokenDisplay, FlexBox } from 'components';
 import { NodeInputs } from 'components/NodeInputs';
+import { useRecoilState } from 'recoil';
+import { tokenId } from 'state';
 
 function App() {
-  const [tokenId, setTokenId] = useState<string>()
+  const [id, setId] = useRecoilState(tokenId)
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
-    setTokenId(token?.id)
+    setId(token?.id)
   }
 
   const handleClearToken = () => {
-    setTokenId(undefined)
+    setId(undefined)
   }
 
   return (
     <div className="App">
       <FlexBox gap="1rem" flexDirection='column'>
-        {!tokenId ? (
+        {!id ? (
           <TokenSearch onChange={handleSelectToken} />
         ) : (
           <>
-            <TokenDisplay tokenId={tokenId} onClearTokenId={handleClearToken} />
+            <TokenDisplay onClearTokenId={handleClearToken} />
             <NodeInputs />
           </>
         )}
@@ -34,6 +36,3 @@ function App() {
 }
 
 export default App;
-
-
-// Order: token cost, then node cost (number of tokens), starting node count (default 1), daily rewards

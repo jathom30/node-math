@@ -48,23 +48,23 @@ export const NodeInputs = () => {
     <div className="NodeInputs">
       <FlexBox flexDirection='column' gap="1rem">
         <Input
-          label='Starting node count'
+          label='Node count'
           name="nodecount"
           value={nodecount}
           onChange={(val) => setNodecount(parseFloat(val))}
         />
         {step > 0 && <Input
-          label='Node cost (tokens)'
+          label={`Node cost (in ${token?.symbol.toUpperCase()} tokens)`}
           name="nodecost"
           value={nodecost}
           onChange={(val) => setNodecost(parseFloat(val))}
         />}
         {step > 1 && (
           <FlexBox flexDirection='column' gap="0.25rem">
-            <h3>Current node purchase price (USD)</h3>
+            <h3>Current node(s) purchase price (USD)</h3>
             <div className="NodeInputs__box">
               <p><span>({nodecost} tokens per node)</span> {toCurrency(nodeBuyInPrice)}</p>
-              <p><span>(nodes)</span> x {nodecount}</p>
+              <p><span>(Number of nodes)</span> x {nodecount}</p>
               <div className='NodeInputs__seperator' />
               <p>{toCurrency(nodeBuyInPrice * nodecount)}</p>
             </div>
@@ -79,13 +79,18 @@ export const NodeInputs = () => {
         />}
         {step > 2 &&
         <>
+        <FlexBox flexDirection='column' gap="0.25rem">
+          <h3>Earnings at current price (USD)</h3>
+          <div className="NodeInputs__box">
+            <p><span>(Daily)</span> {toCurrency(currentPrice * daily * nodecount)}</p>
+            <p><span>(Weekly)</span> {toCurrency(currentPrice * daily * nodecount * 7)}</p>
+            <p><span>(30 day month)</span> {toCurrency(currentPrice * daily * nodecount * 30)}</p>
+            <p><span>(Yearly)</span> {toCurrency(currentPrice * daily * nodecount * 365)}</p>
+          </div>
+        </FlexBox>
           <FlexBox flexDirection='column' gap="0.25rem">
           <h3>Number of days to ROI/compound (rounded up)</h3>
           <p className='NodeInputs__box'>{Math.ceil(nodecost / daily).toLocaleString()}</p>
-        </FlexBox>
-        <FlexBox flexDirection='column' gap="0.25rem">
-          <h3>Daily earnings at current price (USD)</h3>
-          <p className='NodeInputs__box'>{toCurrency(currentPrice * daily * nodecount)}</p>
         </FlexBox>
         </>
         }

@@ -1,4 +1,21 @@
 .TokenDisplay {
+  &__refresh-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    border-radius: 2rem;
+    padding: 0.25rem 0.5rem;
+    &:hover {
+      background: darkgrey;
+      color: white;
+      span {
+        color: white;
+      }
+    }
+    span {
+      color: lightgreen;
+    }
+  }
   &__clear-btn {
     border-radius: 50%;
     border: none;
@@ -7,6 +24,9 @@
     height: 1.5rem;
     width: 1.5rem;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
       background: darkgrey;
     }
@@ -27,5 +47,18 @@
   }
   &__minmax-price {
     font-size: 0.75rem;
+  }
+  &__modal {
+    padding: 1rem;
+  }
+  h1 {
+    span {
+      font-size: 1rem;
+    }
+  }
+  a {
+    font-size: 0.65rem;
+    color: lightblue;
+    text-decoration: none;
   }
 }
