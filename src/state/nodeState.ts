@@ -15,3 +15,8 @@ export const nodeRewards = atom({
   key: 'nodeRewards',
   default: 0,
 })
+
+export const nodeWithdrawTax = atom({
+  key: 'withdrawTax',
+  default: 0,
+})

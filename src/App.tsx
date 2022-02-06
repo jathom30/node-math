@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SingleValue } from 'react-select'
 import { TokenSearch } from 'components';
 import { TokenSearchResult } from 'types';
 import './App.css';
 import { TokenDisplay, FlexBox } from 'components';
 import { NodeInputs } from 'components/NodeInputs';
-import { useRecoilState } from 'recoil';
-import { tokenId } from 'state';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, tokenId } from 'state';
 
 function App() {
   const [id, setId] = useRecoilState(tokenId)
+  const setNodeCount = useSetRecoilState(nodeCount)
+  const setNodeCost = useSetRecoilState(nodeCost)
+  const setNodeRewards = useSetRecoilState(nodeRewards)
+  const setNodeTax = useSetRecoilState(nodeWithdrawTax)
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setId(token?.id)
@@ -17,6 +21,10 @@ function App() {
 
   const handleClearToken = () => {
     setId(undefined)
+    setNodeCount(1)
+    setNodeCost(0)
+    setNodeRewards(0)
+    setNodeTax(0)
   }
 
   return (

@@ -60,5 +60,8 @@
     font-size: 0.65rem;
     color: lightblue;
     text-decoration: none;
+    &:hover {
+      color: skyblue;
+    }
   }
 }

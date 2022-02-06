@@ -1,0 +1,17 @@
+.NodeTable {
+  &__headers {
+    font-weight: bold;
+    border-bottom: 1px solid lightgrey;
+    padding: 0.25rem;
+    background: white;
+    position: sticky;
+    top: 0;
+  }
+  &__row {
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    &:nth-child(odd) {
+      background: lightgrey;
+    }
+  }
+}
