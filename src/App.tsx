@@ -1,43 +1,43 @@
-import React from 'react';
-import { SingleValue } from 'react-select'
-import { TokenSearch } from 'components';
-import { TokenSearchResult } from 'types';
-import './App.css';
-import { TokenDisplay, FlexBox } from 'components';
-import { NodeInputs } from 'components/NodeInputs';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, tokenId } from 'state';
+import React, { useEffect, useState } from 'react';
+import './App.scss'
+import { Box, FlexBox, NodeContainer } from 'components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import {v4 as uuid }from 'uuid'
 
 function App() {
-  const [id, setId] = useRecoilState(tokenId)
-  const setNodeCount = useSetRecoilState(nodeCount)
-  const setNodeCost = useSetRecoilState(nodeCost)
-  const setNodeRewards = useSetRecoilState(nodeRewards)
-  const setNodeTax = useSetRecoilState(nodeWithdrawTax)
+  const [nodes, setNodes] = useState(['initial'])
+  const [width, setWidth] = useState(0)
 
-  const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
-    setId(token?.id)
+  useEffect(() => {
+    setWidth(window.innerWidth)
+    window.addEventListener('resize', () => setWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWidth(window.innerWidth))
+  }, [])
+
+  const handleNewNode = () => {
+    setNodes([
+      ...nodes, uuid()
+    ])
   }
 
-  const handleClearToken = () => {
-    setId(undefined)
-    setNodeCount(1)
-    setNodeCost(0)
-    setNodeRewards(0)
-    setNodeTax(0)
+  const handleRemoveNode = (id: string) => {
+    setNodes(nodes.filter(node => node !== id))
   }
+
+  const showAddButton = nodes.length < 4 && width > 900
 
   return (
     <div className="App">
-      <FlexBox gap="1rem" flexDirection='column'>
-        {!id ? (
-          <TokenSearch onChange={handleSelectToken} />
-        ) : (
-          <>
-            <TokenDisplay onClearTokenId={handleClearToken} />
-            <NodeInputs />
-          </>
-        )}
+      <FlexBox gap="1rem">
+        {nodes.map((node) => (
+          <Box key={node} flexGrow={1}>
+            <NodeContainer id={node} onRemoveContainer={handleRemoveNode} canRemove={nodes.length > 1} />
+          </Box>
+        ))}
+        {showAddButton && <button onClick={handleNewNode} className="App__new-node-btn">
+          <FontAwesomeIcon icon={faPlusCircle} />
+        </button>}
       </FlexBox>
     </div>
   );

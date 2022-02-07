@@ -1,12 +1,12 @@
-import { atom } from "recoil";
+import { atomFamily } from "recoil";
 import { Token } from "types";
 
-export const tokenAtom = atom<Token | undefined>({
+export const tokenAtom = atomFamily<Token | undefined, string>({
   key: 'token', // unique ID (with respect to other atoms/selectors)
   default: undefined, // default value (aka initial value)
 });
 
-export const tokenId = atom<string | undefined>({
+export const tokenIdAtom = atomFamily<string | undefined, string>({
   key: 'tokenId',
   default: undefined,
 })

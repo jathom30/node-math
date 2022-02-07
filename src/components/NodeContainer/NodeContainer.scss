@@ -1,0 +1,31 @@
+.NodeContainer {
+  flex-grow: 1;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  @media screen and (max-width: 900px) {
+    border-radius: 0;
+  }
+  &__wrapper {
+    max-width: 900px;
+    min-width: 300px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  &__delete-btn {
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    color: orangered;
+    cursor: pointer;
+    &:hover {
+      background: orangered;
+      color: white;
+    }
+  }
+}

@@ -7,8 +7,28 @@ p {
   margin: 0;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: lightgrey;
+  padding: 1rem;
+  min-height: 100vh;
+  @media screen and (max-width: 900px) {
+    padding: 0;
+    background: white;
+  }
+}
+
 .App {
-  padding: 2rem;
+  &__new-node-btn {
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    height: 2rem;
+    min-width: 2rem;
+  }
 }
 
 .App-logo {

@@ -8,9 +8,10 @@
   }
   &__container {
     position: relative;
+    display: flex;
   }
   &__input {
-    width: 100%;
+    flex-grow: 1;
     padding: 0.35rem;
     font-size: 1rem;
     border-radius: 0.25rem;

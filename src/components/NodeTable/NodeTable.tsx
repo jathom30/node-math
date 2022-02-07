@@ -5,10 +5,10 @@ import { useRecoilValue } from 'recoil';
 import { nodeCost, nodeRewards, nodeWithdrawTax } from 'state';
 import './NodeTable.scss'
 
-export const NodeTable = () => {
-  const nodecost = useRecoilValue(nodeCost)
-  const dailyReward = useRecoilValue(nodeRewards)
-  const tax = useRecoilValue(nodeWithdrawTax)
+export const NodeTable: React.FC<{id: string}> = ({id}) => {
+  const nodecost = useRecoilValue(nodeCost(id))
+  const dailyReward = useRecoilValue(nodeRewards(id))
+  const tax = useRecoilValue(nodeWithdrawTax(id))
 
   const data = createCompoundData(nodecost, dailyReward, tax)
 
@@ -29,7 +29,7 @@ export const NodeTable = () => {
           <div key={row.nodeCount} className="NodeTable__row">
             <GridBox gridTemplateColumns={`repeat(3, 1fr)`} gap="0.5rem">
               <span>{row.nodeCount}</span>
-              <span>{Math.round(row.day)}</span>
+              <span>{Math.round(row.day).toLocaleString()}</span>
               <span>{Math.round((row.rewards + Number.EPSILON) * 1000) / 1000}</span>
             </GridBox>
           </div>

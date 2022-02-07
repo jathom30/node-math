@@ -7,20 +7,20 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { tokenAtom, tokenId } from 'state/tokenState';
+import { tokenAtom, tokenIdAtom } from 'state/tokenState';
 import { TokenSearchResult } from 'types';
 import { FlexBox } from '../Box';
 import './TokenDisplay.scss'
 
-export const TokenDisplay: React.FC<{onClearTokenId: () => void}> = ({onClearTokenId}) => {
+export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = ({onClearTokenId, id}) => {
   const [showSearch, setShowSearch] = useState(false)
-  const setToken = useSetRecoilState(tokenAtom)
-  const [id, setId] = useRecoilState(tokenId)
+  const setToken = useSetRecoilState(tokenAtom(id))
+  const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const tokenQuery = useQuery(
-    ['token', id],
-    () => id ? getToken(id) : undefined,
+    ['token', tokenId],
+    () => tokenId ? getToken(tokenId) : undefined,
     {
-      enabled: !!id,
+      enabled: !!tokenId,
       onSuccess: (data) => setToken(data?.data)
     },
   )
@@ -36,7 +36,7 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void}> = ({onClearTok
   const percDiff = 100 - currentDiff / dayDiff * 100
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
-    setId(token?.id)
+    setTokenId(token?.id)
     setShowSearch(false)
   }
 
@@ -64,14 +64,14 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void}> = ({onClearTok
         {tokenQuery.isFetching ? (
           <h1><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
-          <h1>{toCurrency(currentPrice)} <span>USD</span></h1>
+          <h1>{currentPrice} <span>USD</span></h1>
         )}
         <div className="TokenDisplay__money-bar">
           <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
         </div>
         <FlexBox justifyContent="space-between">
-          <span className='TokenDisplay__minmax-price'>{toCurrency(token?.market_data.low_24h.usd || 0)}</span>
-          <span className='TokenDisplay__minmax-price'>{toCurrency(token?.market_data.high_24h.usd || 0)}</span>
+          <span className='TokenDisplay__minmax-price'>{token?.market_data.low_24h.usd || 0}</span>
+          <span className='TokenDisplay__minmax-price'>{token?.market_data.high_24h.usd || 0}</span>
         </FlexBox>
       </FlexBox>
       <FlexBox justifyContent="flex-end">
