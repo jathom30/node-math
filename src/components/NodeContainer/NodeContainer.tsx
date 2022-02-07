@@ -1,48 +1,48 @@
 import React from 'react';
 import { FlexBox, NodeInputs, TokenDisplay, TokenSearch } from 'components';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, tokenIdAtom } from 'state';
+import { useRecoilState } from 'recoil';
+import { tokenIdAtom } from 'state';
 import './NodeContainer.scss'
 import { SingleValue } from 'react-select';
 import { TokenSearchResult } from 'types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faGripHorizontal, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useNodes } from 'hooks/useNodes';
 
 export const NodeContainer: React.FC<{
   id: string
-  onRemoveContainer: (id: string) => void
+  onRemove: (id: string) => void
+  onCopy: (newId: string, referenceId: string) => void
   canRemove: boolean
-}> = ({id, onRemoveContainer, canRemove}) => {
+}> = ({id, onRemove, onCopy, canRemove}) => {
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
-  const setNodeCount = useSetRecoilState(nodeCount(id))
-  const setNodeCost = useSetRecoilState(nodeCost(id))
-  const setNodeRewards = useSetRecoilState(nodeRewards(id))
-  const setNodeTax = useSetRecoilState(nodeWithdrawTax(id))
+  const {onCopyNode, onClearNode, cloneId} = useNodes(id)
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setTokenId(token?.id)
   }
 
-  const handleClearToken = () => {
-    setTokenId(undefined)
-    setNodeCount(1)
-    setNodeCost(0)
-    setNodeRewards(0)
-    setNodeTax(0)
+  const handleCopyNode = () => {
+    onCopy(cloneId, id)
+    onCopyNode()
   }
 
   return (
     <div className="NodeContainer">
-      {canRemove && <FlexBox justifyContent="flex-end">
-        <button className='NodeContainer__delete-btn' onClick={() => onRemoveContainer(id)}><FontAwesomeIcon icon={faTrash} /></button>
-      </FlexBox>}
+      <FlexBox justifyContent="space-between">
+        <div className='NodeContainer__btn NodeContainer__btn--handle' onClick={handleCopyNode}><FontAwesomeIcon icon={faGripHorizontal} /></div>
+        <FlexBox justifyContent="flex-end" gap="1rem">
+          <button className='NodeContainer__btn NodeContainer__btn--copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faCopy} /></button>
+          <button className='NodeContainer__btn' onClick={() => onRemove(id)}><FontAwesomeIcon icon={faTrash} /></button>
+        </FlexBox>
+      </FlexBox>
       <div className="NodeContainer__wrapper">
         <FlexBox gap="1rem" flexDirection='column'>
           {!tokenId ? (
             <TokenSearch onChange={handleSelectToken} />
           ) : (
             <>
-              <TokenDisplay onClearTokenId={handleClearToken} id={id} />
+              <TokenDisplay onClearTokenId={onClearNode} id={id} />
               <NodeInputs id={id} />
             </>
           )}

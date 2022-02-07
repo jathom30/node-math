@@ -12,7 +12,7 @@
     margin: 0 auto;
     padding: 1rem;
   }
-  &__delete-btn {
+  &__btn {
     border: none;
     border-radius: 50%;
     display: flex;
@@ -26,6 +26,21 @@
     &:hover {
       background: orangered;
       color: white;
+    }
+    &--copy {
+      color: lightskyblue;
+      &:hover {
+        background: skyblue;
+        color: white;
+      }
+    }
+    &--handle {
+      color: grey;
+      cursor: grab;
+      &:hover {
+        background: grey;
+        color: white;
+      }
     }
   }
 }
