@@ -1,6 +1,7 @@
 .NodeTable {
   &__headers {
     font-weight: bold;
+    font-size: 0.75rem;
     border-bottom: 1px solid lightgrey;
     padding: 0.25rem;
     background: white;
@@ -12,6 +13,21 @@
     border-radius: 0.25rem;
     &:nth-child(odd) {
       background: lightgrey;
+    }
+  }
+  &__earnings-btn {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0.25rem;
+    &:hover {
+      background: green;
+      color: lightgreen;
+    }
+    &--active {
+      background: lightgreen;
+      color: green;
     }
   }
 }

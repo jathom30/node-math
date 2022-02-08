@@ -1,13 +1,12 @@
-export const hello = 'hello'
-
 export type CompoundData = {
   day: number;
   nodeCount: number;
   rewards: number;
 }
 
-export const createCompoundData = (tokensPerNode: number, dailyReward: number, tax: number, maxNodeCount?: number) => {
-  const nodes = Array.from({length: maxNodeCount || 100}, (_, i) => i + 1)
+export const createCompoundData = (tokensPerNode: number, dailyReward: number, startingNodeCount: number, maxNodeCount?: number) => {
+  const totalNodes = maxNodeCount || 100
+  const nodes = Array.from({length: totalNodes}, (_, i) => i + 1).splice(startingNodeCount - 1, totalNodes)
   const getDay = (prevDayCount: number, reward: number) => {
     return tokensPerNode / reward + prevDayCount
   }
@@ -25,5 +24,3 @@ export const createCompoundData = (tokensPerNode: number, dailyReward: number, t
   }, [])
   return mappedNodes
 }
-
-// claim tax

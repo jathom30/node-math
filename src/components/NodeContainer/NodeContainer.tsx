@@ -17,7 +17,7 @@ export const NodeContainer: React.FC<{
   canRemove: boolean
 }> = ({id, onRemove, onCopy, canRemove, children}) => {
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
-  const {onCopyNode, onClearNode, cloneId} = useNodes(id)
+  const {onCopyNode, cloneId} = useNodes(id)
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setTokenId(token?.id)
@@ -47,7 +47,7 @@ export const NodeContainer: React.FC<{
         <CollapsibleCard
           header={
             <Box paddingTop="1rem">
-              <TokenDisplay onClearTokenId={onClearNode} id={id} />
+              <TokenDisplay id={id} />
             </Box>
           }
         >

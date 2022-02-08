@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, nodeWithdrawTax, dailyNodeEarnings, nodeCount } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount } from 'state';
 import './NodeTable.scss'
 
+const earningsPeriods = [
+  {
+    label: 'D',
+    value: 1,
+  },
+  {
+    label: 'W',
+    value: 7,
+  },
+  {
+    label: 'M',
+    value: 30,
+  },
+  {
+    label: 'Y',
+    value: 365,
+  },
+]
+
 export const NodeTable: React.FC<{id: string}> = ({id}) => {
+  const [activeEarningsPeriod, setActiveEarningsPeriod] = useState(1)
+  const nodecount = useRecoilValue(nodeCount(id))
   const nodecost = useRecoilValue(nodeCost(id))
   const dailyReward = useRecoilValue(nodeRewards(id))
-  const tax = useRecoilValue(nodeWithdrawTax(id))
 
-  const data = createCompoundData(nodecost, dailyReward, tax)
+  const data = createCompoundData(nodecost, dailyReward, nodecount)
 
   return (
     <div className="NodeTable">
@@ -22,26 +42,38 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
               <span>Nodes</span>
               <span>Days</span>
               <span>Rewards/day</span>
-              <span>USD earnings/day</span>
+              <div>
+                <span>Earnings (USD)</span>
+                <FlexBox paddingTop="0.5rem">
+                  {earningsPeriods.map((period) => (
+                    <button
+                      onClick={() => setActiveEarningsPeriod(period.value)}
+                      className={`NodeTable__earnings-btn ${activeEarningsPeriod === period.value ? 'NodeTable__earnings-btn--active' : ''}`}
+                    >
+                      {period.label}
+                    </button>
+                  ))}
+                </FlexBox>
+              </div>
             </GridBox>
           </FlexBox>
         </div>
         {data?.map((row) => (
-          <TableRow key={row.nodeCount} row={row} id={id} />
+          <TableRow key={row.nodeCount} row={row} id={id} earningsPeriod={activeEarningsPeriod} />
         ))}
       </FlexBox>
     </div>
   )
 }
 
-const TableRow: React.FC<{row: CompoundData, id: string}> = ({row, id}) => {
+const TableRow: React.FC<{row: CompoundData, id: string, earningsPeriod: number}> = ({row, id, earningsPeriod}) => {
   const nodecount = useRecoilValue(nodeCount(id))
   const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
 
   const getDailyEarnings = (numberOfNodes: number) => {
-    return toCurrency(dailyEarnings * numberOfNodes / nodecount)
+    const daily = dailyEarnings * numberOfNodes / nodecount
+    return toCurrency(daily * earningsPeriod)
   }
-  // onHover show weekly, monthly, and yearly earnings
   return (
     <div className="NodeTable__row">
       <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem">

@@ -1,4 +1,4 @@
-import { faEdit, faSearch, faSpinner, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSearch, faSpinner, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getToken } from 'api';
 import { LabelInput, Modal, TokenSearch } from 'components';
@@ -12,7 +12,7 @@ import { TokenSearchResult } from 'types';
 import { FlexBox } from '../Box';
 import './TokenDisplay.scss'
 
-export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = ({onClearTokenId, id}) => {
+export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
   const [showSearch, setShowSearch] = useState(false)
   const setToken = useSetRecoilState(tokenAtom(id))
   const [price, setPrice] = useRecoilState(tokenPrice(id))
@@ -73,7 +73,6 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
         </FlexBox>
         <FlexBox gap="1rem">
           <Button isRounded onClick={() => setShowSearch(true)}><FontAwesomeIcon icon={faSearch} /></Button>
-          <Button isRounded onClick={onClearTokenId}><FontAwesomeIcon icon={faTimes} /></Button>
         </FlexBox>
       </FlexBox>
       <FlexBox justifyContent="flex-end" gap="0.5rem">
@@ -85,15 +84,15 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
           <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
             <LabelInput value={price} onSubmit={handleSetPrice}>
               <FlexBox padding='.125rem' alignItems="center" gap="1rem">
-                <h1>{price} <span>USD</span></h1>
-                <FontAwesomeIcon icon={faEdit} />
+                  <h1>{price} <span>USD</span></h1>
+                  <FontAwesomeIcon icon={faEdit} />
               </FlexBox>
             </LabelInput>
           </FlexBox>
         )}
         {notCurrentPrice ? (
           <>
-            <Button kind="text" onClick={tokenQuery.refetch}>Reset to current market price</Button>
+            <Button kind="danger" onClick={tokenQuery.refetch}>Reset to current market price</Button>
           </>
         ) : (
           <>
