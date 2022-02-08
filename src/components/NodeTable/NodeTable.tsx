@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom } from 'state';
 import './NodeTable.scss'
 
 const earningsPeriods = [
@@ -29,6 +29,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
   const nodecount = useRecoilValue(nodeCount(id))
   const nodecost = useRecoilValue(nodeCost(id))
   const dailyReward = useRecoilValue(nodeRewards(id))
+  const token = useRecoilValue(tokenAtom(id))
 
   const data = createCompoundData(nodecost, dailyReward, nodecount)
 
@@ -36,14 +37,13 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
     <div className="NodeTable">
       <FlexBox flexDirection='column'>
         <div className="NodeTable__headers">
-          <FlexBox flexDirection='column' gap="0.5rem">
+          <FlexBox flexDirection='column'>
             <h3>Node Compound Table</h3>
-            <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem">
+            <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end">
               <span>Nodes</span>
               <span>Days</span>
-              <span>Rewards/day</span>
+              <span>{token?.symbol.toUpperCase()}/day</span>
               <div>
-                <span>Earnings (USD)</span>
                 <FlexBox paddingTop="0.5rem">
                   {earningsPeriods.map((period) => (
                     <button
@@ -54,6 +54,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
                     </button>
                   ))}
                 </FlexBox>
+                <span>Earnings (USD)</span>
               </div>
             </GridBox>
           </FlexBox>
