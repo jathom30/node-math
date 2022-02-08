@@ -1,0 +1,7 @@
+.CollapsibleCard {
+  &__body {
+    &--collapsed {
+      overflow: hidden;
+    }
+  }
+}

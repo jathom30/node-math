@@ -1,18 +1,14 @@
 .NodeContainer {
   flex-grow: 1;
   padding: 1rem;
+  margin: 0.5rem;
   background: white;
   border-radius: 0.5rem;
-  @media screen and (max-width: 900px) {
-    border-radius: 0;
-  }
   &__header {
     border-bottom: 1px solid lightgray;
     padding-bottom: 0.5rem;
   }
   &__wrapper {
-    max-width: 900px;
-    min-width: 300px;
     margin: 0 auto;
     padding: 1rem;
   }

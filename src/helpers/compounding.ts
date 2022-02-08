@@ -1,6 +1,6 @@
 export const hello = 'hello'
 
-type CompoundData = {
+export type CompoundData = {
   day: number;
   nodeCount: number;
   rewards: number;

@@ -1,22 +1,16 @@
 import React from 'react';
 import { FlexBox, GridBox } from 'components';
-import { createCompoundData, toCurrency } from 'helpers';
+import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
 import { nodeCost, nodeRewards, nodeWithdrawTax, dailyNodeEarnings, nodeCount } from 'state';
 import './NodeTable.scss'
 
 export const NodeTable: React.FC<{id: string}> = ({id}) => {
-  const nodecount = useRecoilValue(nodeCount(id))
   const nodecost = useRecoilValue(nodeCost(id))
   const dailyReward = useRecoilValue(nodeRewards(id))
   const tax = useRecoilValue(nodeWithdrawTax(id))
-  const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
 
   const data = createCompoundData(nodecost, dailyReward, tax)
-
-  const getDailyEarnings = (numberOfNodes: number) => {
-    return toCurrency(dailyEarnings * numberOfNodes / nodecount)
-  }
 
   return (
     <div className="NodeTable">
@@ -33,16 +27,29 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
           </FlexBox>
         </div>
         {data?.map((row) => (
-          <div key={row.nodeCount} className="NodeTable__row">
-            <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem">
-              <span>{row.nodeCount}</span>
-              <span>{Math.round(row.day).toLocaleString()}</span>
-              <span>{Math.round((row.rewards + Number.EPSILON) * 1000) / 1000}</span>
-              <span>{getDailyEarnings(row.nodeCount)}</span>
-            </GridBox>
-          </div>
+          <TableRow key={row.nodeCount} row={row} id={id} />
         ))}
       </FlexBox>
+    </div>
+  )
+}
+
+const TableRow: React.FC<{row: CompoundData, id: string}> = ({row, id}) => {
+  const nodecount = useRecoilValue(nodeCount(id))
+  const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
+
+  const getDailyEarnings = (numberOfNodes: number) => {
+    return toCurrency(dailyEarnings * numberOfNodes / nodecount)
+  }
+  // onHover show weekly, monthly, and yearly earnings
+  return (
+    <div className="NodeTable__row">
+      <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem">
+        <span>{row.nodeCount}</span>
+        <span>{Math.round(row.day).toLocaleString()}</span>
+        <span>{Math.round((row.rewards + Number.EPSILON) * 1000) / 1000}</span>
+        <span>{getDailyEarnings(row.nodeCount)}</span>
+      </GridBox>
     </div>
   )
 }

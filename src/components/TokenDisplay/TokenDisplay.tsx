@@ -18,10 +18,11 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
   const [price, setPrice] = useRecoilState(tokenPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const tokenQuery = useQuery(
-    ['token', tokenId],
+    ['token', tokenId, id],
     () => tokenId ? getToken(tokenId) : undefined,
     {
       enabled: !!tokenId,
+      staleTime: Infinity,
       onSuccess: (data) => {
         setToken(data?.data)
         if (data?.data.market_data.current_price.usd) {
