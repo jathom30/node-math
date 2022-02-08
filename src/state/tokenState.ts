@@ -6,6 +6,11 @@ export const tokenAtom = atomFamily<Token | undefined, string>({
   default: undefined, // default value (aka initial value)
 });
 
+export const tokenPrice = atomFamily<number, string>({
+  key: 'tokenPrice',
+  default: 0,
+})
+
 export const tokenIdAtom = atomFamily<string | undefined, string>({
   key: 'tokenId',
   default: undefined,

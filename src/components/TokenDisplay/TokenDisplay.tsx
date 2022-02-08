@@ -1,13 +1,13 @@
-import { faSearch, faSpinner, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faSearch, faSpinner, faSync, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getToken } from 'api';
-import { Modal, TokenSearch } from 'components';
-import { toCurrency } from 'helpers';
+import { LabelInput, Modal, TokenSearch } from 'components';
+import { Button } from 'components/Button';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { tokenAtom, tokenIdAtom } from 'state/tokenState';
+import { tokenAtom, tokenIdAtom, tokenPrice } from 'state/tokenState';
 import { TokenSearchResult } from 'types';
 import { FlexBox } from '../Box';
 import './TokenDisplay.scss'
@@ -15,19 +15,26 @@ import './TokenDisplay.scss'
 export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = ({onClearTokenId, id}) => {
   const [showSearch, setShowSearch] = useState(false)
   const setToken = useSetRecoilState(tokenAtom(id))
+  const [price, setPrice] = useRecoilState(tokenPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const tokenQuery = useQuery(
     ['token', tokenId],
     () => tokenId ? getToken(tokenId) : undefined,
     {
       enabled: !!tokenId,
-      onSuccess: (data) => setToken(data?.data)
+      onSuccess: (data) => {
+        setToken(data?.data)
+        if (data?.data.market_data.current_price.usd) {
+          setPrice(data?.data.market_data.current_price.usd)
+        }
+      }
     },
   )
 
   const token = tokenQuery.data?.data
 
   const currentPrice = token?.market_data.current_price.usd ?? 0
+
   const low24 = token?.market_data.low_24h.usd ?? 0
   const high24 = token?.market_data.high_24h.usd ?? 0
 
@@ -40,7 +47,17 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
     setShowSearch(false)
   }
 
-  if (tokenQuery.isLoading) return <span>...loading...</span>
+  const handleSetPrice = (newPrice: number | string) => {
+    if (typeof newPrice === 'string') {
+      setPrice(parseFloat(newPrice))
+    } else {
+      setPrice(newPrice)
+    }
+  }
+
+  const notCurrentPrice = price !== currentPrice
+
+  if (tokenQuery.isLoading) return <span>loading...</span>
   return (
     <div className="TokenDisplay">
       <FlexBox alignItems="center" gap="1rem" justifyContent="space-between">
@@ -54,8 +71,8 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
           </button>
         </FlexBox>
         <FlexBox gap="1rem">
-          <button className='TokenDisplay__clear-btn' onClick={() => setShowSearch(true)}><FontAwesomeIcon icon={faSearch} /></button>
-          <button className='TokenDisplay__clear-btn' onClick={onClearTokenId}><FontAwesomeIcon icon={faTimes} /></button>
+          <Button isRounded onClick={() => setShowSearch(true)}><FontAwesomeIcon icon={faSearch} /></Button>
+          <Button isRounded onClick={onClearTokenId}><FontAwesomeIcon icon={faTimes} /></Button>
         </FlexBox>
       </FlexBox>
       <FlexBox justifyContent="flex-end" gap="0.5rem">
@@ -64,15 +81,30 @@ export const TokenDisplay: React.FC<{onClearTokenId: () => void, id: string}> = 
         {tokenQuery.isFetching ? (
           <h1><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
-          <h1>{currentPrice} <span>USD</span></h1>
+          <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
+            <LabelInput value={price} onSubmit={handleSetPrice}>
+              <FlexBox padding='.125rem' alignItems="center" gap="1rem">
+                <h1>{price} <span>USD</span></h1>
+                <FontAwesomeIcon icon={faEdit} />
+              </FlexBox>
+            </LabelInput>
+          </FlexBox>
         )}
-        <div className="TokenDisplay__money-bar">
-          <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
-        </div>
-        <FlexBox justifyContent="space-between">
-          <span className='TokenDisplay__minmax-price'>{token?.market_data.low_24h.usd || 0}</span>
-          <span className='TokenDisplay__minmax-price'>{token?.market_data.high_24h.usd || 0}</span>
-        </FlexBox>
+        {notCurrentPrice ? (
+          <>
+            <Button kind="text" onClick={tokenQuery.refetch}>Reset to current market price</Button>
+          </>
+        ) : (
+          <>
+            <div className="TokenDisplay__money-bar">
+              <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
+            </div>
+            <FlexBox justifyContent="space-between">
+              <span className='TokenDisplay__minmax-price'>{token?.market_data.low_24h.usd || 0}</span>
+              <span className='TokenDisplay__minmax-price'>{token?.market_data.high_24h.usd || 0}</span>
+            </FlexBox>
+          </>
+        )}
       </FlexBox>
       <FlexBox justifyContent="flex-end">
         <a href={`https://coingecko.com/en/coins/${token?.id}`} target="_blank" rel="noopener noreferrer">More coin info here</a>

@@ -6,6 +6,10 @@
   @media screen and (max-width: 900px) {
     border-radius: 0;
   }
+  &__header {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 0.5rem;
+  }
   &__wrapper {
     max-width: 900px;
     min-width: 300px;

@@ -33,9 +33,9 @@ function App() {
     setNodeIds([...nodeIds.slice(0, newIndex), newId, ...nodeIds.slice(newIndex)])
   }
 
-  const handleDradEnd = (result: unknown) => {
-    console.log(result)
-  }
+  // const handleDradEnd = (result: unknown) => {
+  //   console.log(result)
+  // }
 
   const showAddButton = nodeIds.length < 4 && width > 900
 

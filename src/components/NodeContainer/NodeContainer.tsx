@@ -8,6 +8,7 @@ import { TokenSearchResult } from 'types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faGripHorizontal, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNodes } from 'hooks/useNodes';
+import { Button } from 'components/Button';
 
 export const NodeContainer: React.FC<{
   id: string
@@ -29,13 +30,15 @@ export const NodeContainer: React.FC<{
 
   return (
     <div className="NodeContainer">
-      <FlexBox justifyContent="space-between">
-        <div className='NodeContainer__btn NodeContainer__btn--handle' onClick={handleCopyNode}><FontAwesomeIcon icon={faGripHorizontal} /></div>
-        <FlexBox justifyContent="flex-end" gap="1rem">
-          <button className='NodeContainer__btn NodeContainer__btn--copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faCopy} /></button>
-          <button className='NodeContainer__btn' onClick={() => onRemove(id)}><FontAwesomeIcon icon={faTrash} /></button>
+      <div className="NodeContainer__header">
+        <FlexBox justifyContent="space-between">
+          <div className='NodeContainer__btn NodeContainer__btn--handle' onClick={handleCopyNode}><FontAwesomeIcon icon={faGripHorizontal} /></div>
+          <FlexBox justifyContent="flex-end" gap="1rem">
+            <Button isRounded kind='copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faCopy} /></Button>
+            <Button isRounded kind="danger" onClick={() => onRemove(id)}><FontAwesomeIcon icon={faTrash} /></Button>
+          </FlexBox>
         </FlexBox>
-      </FlexBox>
+      </div>
       <div className="NodeContainer__wrapper">
         <FlexBox gap="1rem" flexDirection='column'>
           {!tokenId ? (

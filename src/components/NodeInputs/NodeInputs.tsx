@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FlexBox, Input, NodeTable } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, tokenAtom } from 'state';
+import { dailyNodeEarnings, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, tokenAtom, tokenPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
+import { Button } from 'components/Button';
 
 export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [step, setStep] = useState(0)
@@ -11,9 +12,10 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [nodecost, setNodecost] = useRecoilState(nodeCost(id))
   const [daily, setDaily] = useRecoilState(nodeRewards(id))
   const [tax, setTax] = useRecoilState(nodeWithdrawTax(id))
+  const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
 
   const token = useRecoilValue(tokenAtom(id))
-  const currentPrice = token?.market_data.current_price.usd ?? 0
+  const currentPrice = useRecoilValue(tokenPrice(id))
   const nodeBuyInPrice = nodecost * currentPrice
 
   const isEnabled = () => {
@@ -30,8 +32,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   }
 
   const getEarnings = (days: number) => {
-    const remainderAfterTaxes = (100 - (tax || 0)) / 100
-    return currentPrice * daily * nodecount * days * remainderAfterTaxes
+    return dailyEarnings * days
   }
 
   return (
@@ -100,12 +101,12 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           }
         </FlexBox>
         {step > 2 && <NodeTable id={id} />}
-        {step < 3 && <button
-          className={`NodeInputs__btn`}
-          onClick={() => setStep(step + 1)} disabled={!isEnabled()}
+        {step < 3 && <Button
+          kind='primary'
+          onClick={() => setStep(step + 1)} isDisabled={!isEnabled()}
         >
           Continue
-        </button>}
+        </Button>}
       </FlexBox>
     </div>
   )

@@ -1,4 +1,5 @@
-import { atomFamily } from "recoil"
+import { atomFamily, selectorFamily } from "recoil"
+import { tokenPrice } from "./tokenState"
 
 export const nodeCount = atomFamily({
   key: 'nodeCount',
@@ -19,4 +20,16 @@ export const nodeRewards = atomFamily({
 export const nodeWithdrawTax = atomFamily({
   key: 'withdrawTax',
   default: 0,
+})
+
+export const dailyNodeEarnings = selectorFamily({
+  key: 'dailyNodeEarningsSelector',
+  get: (id: string) => ({ get }) => {
+    const currentPrice = get(tokenPrice(id))
+    const daily = get(nodeRewards(id))
+    const nodecount = get(nodeCount(id))
+    const tax = get(nodeWithdrawTax(id))
+    const remainderAfterTaxes = (100 - (tax || 0)) / 100
+    return currentPrice * daily * nodecount * remainderAfterTaxes
+  }
 })

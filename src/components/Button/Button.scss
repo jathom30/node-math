@@ -1,0 +1,55 @@
+.Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  background: lightgrey;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    background: grey;
+  }
+  &--rounded {
+    border-radius: 3rem;
+  }
+  &__primary {
+    background: lightgreen;
+    color: green;
+    &:hover {
+      background-color: rgb(72, 175, 72);
+      color: white;
+    }
+  }
+  &__danger {
+    color: orangered;
+    background-color: transparent;
+    &:hover {
+      background: orangered;
+      color: white;
+    }
+  }
+  &__copy {
+    color: lightblue;
+    background-color: transparent;
+    &:hover {
+      background: lightblue;
+      color: white;
+    }
+  }
+  &__text {
+    color: grey;
+    background: transparent;
+    &:hover {
+      background: lightgrey;
+    }
+  }
+  &--disabled {
+    color: white;
+    background: lightgrey;
+    pointer-events: none;
+  }
+}

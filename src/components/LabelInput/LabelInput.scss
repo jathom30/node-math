@@ -1,0 +1,54 @@
+.LabelInput {
+  width: 100%;
+  &__container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+  }
+  // input styles copied for the most part from FormGroup styles
+  &__input {
+    height: 40px;
+    border-radius: 3px;
+    line-height: 15px;
+    font-size: 14px;
+    padding: 10px 25px 10px 15px;
+    border: 1px solid lightgrey;
+    box-sizing: border-box;
+    width: 100%;
+    &:disabled {
+      background-color: lightgrey;
+      border: 1px solid darkgrey;
+    }
+  }
+  &__full {
+    width: 100%;
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    width: 100%;
+    // this is the fixed height of the TextInput
+    min-height: 40px;
+    border-radius: 3px;
+    &:hover {
+      background: lightgrey;
+    }
+  }
+  &__submit {
+    svg {
+      fill: lightgreen;
+    }
+  }
+  &__cancel {
+    svg {
+      fill: grey;
+    }
+  }
+}
