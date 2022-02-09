@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss'
-import { MaxHeightContainer, NodeContainer, Header } from 'components';
+import { MaxHeightContainer, NodeContainer, Header, Footer } from 'components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
 import {v4 as uuid }from 'uuid'
@@ -67,6 +67,7 @@ function App() {
     <div className="App">
       <MaxHeightContainer
         header={<Header onClick={handleNewNode} />}
+        footer={<Footer />}
         fullHeight
       >
         <div className={`App__wrapper ${columnView ? 'App__wrapper--columns': ''}`}>

@@ -1,0 +1,21 @@
+.Footer {
+  background: white;
+  padding: 0.25rem 0.5rem;
+  box-shadow: 0 -3px 3px rgba(black, 0.25);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  a {
+    text-decoration: none;
+    color: black;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  svg {
+    height: 2rem;
+    width: auto;
+  }
+}
