@@ -29,6 +29,7 @@ body {
 .App {
   height: 100vh;
   height: var(--app-height);
+  isolation: isolate;
   &__wrapper {
     display: flex;
     gap: 0.5rem;
