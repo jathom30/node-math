@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss'
-import { Box, MaxHeightContainer, NodeContainer, Header, Button } from 'components';
+import { MaxHeightContainer, NodeContainer, Header } from 'components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGripHorizontal, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
 import {v4 as uuid }from 'uuid'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
@@ -19,14 +19,20 @@ function App() {
   const [width, setWidth] = useState(0)
 
   useEffect(() => {
-    setWidth(window.innerWidth)
-    window.addEventListener('resize', () => setWidth(window.innerWidth))
-    return () => window.removeEventListener('resize', () => setWidth(window.innerWidth))
+    const handleResize = () => {
+      setWidth(window.innerWidth)
+      const doc = document.documentElement
+      doc.style.setProperty('--app-height', `${window.innerHeight}px`)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   const handleNewNode = () => {
     setNodeIds([
-      ...nodeIds, uuid()
+      uuid(),
+      ...nodeIds,
     ])
   }
 

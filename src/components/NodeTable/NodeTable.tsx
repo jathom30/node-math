@@ -41,10 +41,10 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
             <h3>Node Compound Table</h3>
             <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end">
               <span>Nodes</span>
-              <span>Days</span>
+              <span>Days to compound</span>
               <span>{token?.symbol.toUpperCase()}/day</span>
               <div>
-                <FlexBox paddingTop="0.5rem">
+                <FlexBox>
                   {earningsPeriods.map((period) => (
                     <button
                       onClick={() => setActiveEarningsPeriod(period.value)}

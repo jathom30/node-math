@@ -1,3 +1,7 @@
+:root {
+  --app-height: 100%;
+}
+
 h1,
 h2,
 h3,
@@ -11,12 +15,20 @@ p {
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
 body {
   background: lightgrey;
 }
 
 .App {
   height: 100vh;
+  height: var(--app-height);
   &__wrapper {
     display: flex;
     gap: 0.5rem;
@@ -32,6 +44,8 @@ body {
   }
   &__draggable {
     width: 100%;
-    min-width: 400px;
+    @media screen and (min-width: 550px) {
+      min-width: 500px;
+    }
   }
 }
