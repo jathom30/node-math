@@ -47,6 +47,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
                 <FlexBox>
                   {earningsPeriods.map((period) => (
                     <button
+                      key={period.value}
                       onClick={() => setActiveEarningsPeriod(period.value)}
                       className={`NodeTable__earnings-btn ${activeEarningsPeriod === period.value ? 'NodeTable__earnings-btn--active' : ''}`}
                     >

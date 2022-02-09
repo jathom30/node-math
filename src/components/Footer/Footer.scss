@@ -1,5 +1,4 @@
 .Footer {
-  background: white;
   padding: 0.25rem 0.5rem;
   box-shadow: 0 -3px 3px rgba(black, 0.25);
   position: relative;
@@ -7,6 +6,15 @@
   align-items: center;
   justify-content: flex-end;
   gap: 1rem;
+  background: white;
+  img {
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    &:hover {
+      border-color: lightgreen;
+    }
+  }
   a {
     text-decoration: none;
     color: black;
@@ -15,7 +23,7 @@
     }
   }
   svg {
-    height: 2rem;
+    height: 2.5rem;
     width: auto;
   }
 }

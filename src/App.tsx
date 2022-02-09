@@ -67,7 +67,7 @@ function App() {
     <div className="App">
       <MaxHeightContainer
         header={<Header onClick={handleNewNode} />}
-        footer={<Footer />}
+        footer={<Footer isMobile={columnView} />}
         fullHeight
       >
         <div className={`App__wrapper ${columnView ? 'App__wrapper--columns': ''}`}>
