@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss'
-import { Box, FlexBox, NodeContainer } from 'components';
+import { Box, MaxHeightContainer, NodeContainer, Header, Button } from 'components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripHorizontal, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import {v4 as uuid }from 'uuid'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { Button } from 'components/Button';
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
@@ -59,36 +58,39 @@ function App() {
   const columnView = width < 800
 
   return (
-    <div className={`App ${columnView ? 'App--columns': ''}`}>
-      <DragDropContext onDragEnd={handleDradEnd}>
-        <Droppable droppableId='droppable' direction={columnView ? 'vertical' : 'horizontal'}>
-          {(provided, snapshot) => (
-            <div className={`App__droppable ${columnView ? 'App__droppable--columns' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
-                {nodeIds.map((nodeId, i) => (
-                  <Draggable key={nodeId} draggableId={nodeId} index={i}>
-                    {(provided, snapshot) => (
-                      <div className='App__draggable' ref={provided.innerRef} {...provided.draggableProps}>
-                        <NodeContainer
-                          id={nodeId}
-                          onRemove={handleRemoveNode}
-                          onCopy={handleCopyNode}
-                          canRemove={nodeIds.length > 1}
-                        >
-                          <div className='NodeContainer__btn NodeContainer__btn--handle' {...provided.dragHandleProps}><FontAwesomeIcon icon={faGripHorizontal} /></div>
-                        </NodeContainer>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <Box padding='0.5rem' paddingTop={0}>
-        <Button width="100%" onClick={handleNewNode}>
-          <FontAwesomeIcon icon={faPlusCircle} />
-        </Button>
-      </Box>
+    <div className="App">
+      <MaxHeightContainer
+        header={<Header onClick={handleNewNode} />}
+        fullHeight
+      >
+        <div className={`App__wrapper ${columnView ? 'App__wrapper--columns': ''}`}>
+          <DragDropContext onDragEnd={handleDradEnd}>
+            <Droppable droppableId='droppable' direction={columnView ? 'vertical' : 'horizontal'}>
+              {(provided, snapshot) => (
+                <div className={`App__droppable ${columnView ? 'App__droppable--columns' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
+                    {nodeIds.map((nodeId, i) => (
+                      <Draggable key={nodeId} draggableId={nodeId} index={i}>
+                        {(provided, snapshot) => (
+                          <div className='App__draggable' ref={provided.innerRef} {...provided.draggableProps}>
+                            <NodeContainer
+                              id={nodeId}
+                              onRemove={handleRemoveNode}
+                              onCopy={handleCopyNode}
+                              canRemove={nodeIds.length > 1}
+                            >
+                              <div className='NodeContainer__btn NodeContainer__btn--handle' {...provided.dragHandleProps}><FontAwesomeIcon icon={faGripHorizontal} /></div>
+                            </NodeContainer>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      </MaxHeightContainer>
+
     </div>
   );
 }

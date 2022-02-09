@@ -6,7 +6,7 @@ import './NodeContainer.scss'
 import { SingleValue } from 'react-select';
 import { TokenSearchResult } from 'types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faClone, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNodes } from 'hooks/useNodes';
 import { Button } from 'components/Button';
 
@@ -34,7 +34,7 @@ export const NodeContainer: React.FC<{
         <FlexBox justifyContent="space-between">
           {children}
           <FlexBox justifyContent="flex-end" gap="1rem">
-            <Button isRounded kind='copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faCopy} /></Button>
+            <Button isRounded kind='copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faClone} /></Button>
             <Button isRounded kind="danger" onClick={() => onRemove(id)}><FontAwesomeIcon icon={faTrash} /></Button>
           </FlexBox>
         </FlexBox>

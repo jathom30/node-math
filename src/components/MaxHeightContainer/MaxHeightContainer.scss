@@ -1,0 +1,18 @@
+.MaxHeightContainer {
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    position: relative;
+    z-index: 1;
+  }
+  &__content {
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
+    z-index: 0;
+  }
+  &--full-height {
+    height: 100%;
+  }
+}

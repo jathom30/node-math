@@ -13,18 +13,16 @@ p {
 
 body {
   background: lightgrey;
-  padding: 1rem;
-  min-height: 100vh;
-  @media screen and (max-width: 900px) {
-    padding: 0;
-  }
 }
 
 .App {
-  display: flex;
-  gap: 0.5rem;
-  &--columns {
-    flex-direction: column;
+  height: 100vh;
+  &__wrapper {
+    display: flex;
+    gap: 0.5rem;
+    &--columns {
+      flex-direction: column;
+    }
   }
   &__droppable {
     display: flex;
