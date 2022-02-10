@@ -7,15 +7,15 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { tokenAtom, tokenIdAtom, tokenPrice } from 'state/tokenState';
+import { tokenAtom, tokenIdAtom, userSetPrice } from 'state/tokenState';
 import { TokenSearchResult } from 'types';
 import { FlexBox } from '../Box';
 import './TokenDisplay.scss'
 
-export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
+export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id, isCollapsed = false}) => {
   const [showSearch, setShowSearch] = useState(false)
   const setToken = useSetRecoilState(tokenAtom(id))
-  const [price, setPrice] = useRecoilState(tokenPrice(id))
+  const [price, setPrice] = useRecoilState(userSetPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const tokenQuery = useQuery(
     ['token', tokenId, id],
@@ -25,9 +25,6 @@ export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
       staleTime: Infinity,
       onSuccess: (data) => {
         setToken(data?.data)
-        if (data?.data.market_data.current_price.usd) {
-          setPrice(data?.data.market_data.current_price.usd)
-        }
       }
     },
   )
@@ -56,35 +53,64 @@ export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
     }
   }
 
-  const notCurrentPrice = price !== currentPrice
+  const notCurrentPrice = price && price !== currentPrice
+
+  const handleResetPrice = () => {
+    tokenQuery.refetch()
+    setPrice(undefined)
+  }
 
   if (tokenQuery.isLoading) return <span>loading...</span>
+  if (isCollapsed) {
+    return (
+      <div className="TokenDisplay TokenDisplay--collapsed">
+        <FlexBox flexDirection='column' gap=".5rem">
+          <FlexBox justifyContent="space-between" alignItems="center">
+            <FlexBox gap="0.5rem" alignItems="center">
+              <img className="TokenDisplay__img" src={token?.image.small} alt={token?.name} />
+              <h3>{token?.name} ({token?.symbol.toUpperCase()})</h3>
+            </FlexBox>
+            <FlexBox gap="0.5rem" alignItems="center">
+              <h2>${price || currentPrice} <span>USD</span></h2>
+              <Button kind="copy" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
+            </FlexBox>
+          </FlexBox>
+          <div className="TokenDisplay__money-bar">
+            <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
+          </div>
+          <FlexBox justifyContent="space-between">
+            <span className='TokenDisplay__minmax-price'>${token?.market_data.low_24h.usd || 0}</span>
+            <span className='TokenDisplay__minmax-price'>${token?.market_data.high_24h.usd || 0}</span>
+          </FlexBox>
+        </FlexBox>
+      </div>
+    )
+  }
   return (
     <div className="TokenDisplay">
       <FlexBox alignItems="center" gap="1rem" justifyContent="space-between">
         <FlexBox alignItems="center" gap="0.5rem">
           <img className="TokenDisplay__img" src={token?.image.small} alt={token?.name} />
-          <button className='TokenDisplay__refresh-btn' onClick={() => tokenQuery.refetch()}>
+          <button className='TokenDisplay__search-btn' onClick={() => setShowSearch(true)}>
             <FlexBox gap="0.5rem" alignItems="center">
               <h2>{token?.name} ({token?.symbol.toUpperCase()})</h2>
-              <span><FontAwesomeIcon icon={faSync} /></span>
+              <span><FontAwesomeIcon icon={faSearch} /></span>
             </FlexBox>
           </button>
         </FlexBox>
         <FlexBox gap="1rem">
-          <Button isRounded onClick={() => setShowSearch(true)}><FontAwesomeIcon icon={faSearch} /></Button>
+          <Button isRounded kind="copy" onClick={() => tokenQuery.refetch()}><FontAwesomeIcon icon={faSync} /></Button>
         </FlexBox>
       </FlexBox>
-      <FlexBox justifyContent="flex-end" gap="0.5rem">
-      </FlexBox>
+      
       <FlexBox flexDirection='column' gap="0.25rem">
         {tokenQuery.isFetching ? (
           <h1><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
           <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
-            <LabelInput value={price} onSubmit={handleSetPrice}>
+            <LabelInput value={price || currentPrice} onSubmit={handleSetPrice}>
               <FlexBox padding='.125rem' alignItems="center" gap="1rem">
-                  <h1>{price} <span>USD</span></h1>
+                  <h1>${price || currentPrice} <span>USD</span></h1>
                   <FontAwesomeIcon icon={faEdit} />
               </FlexBox>
             </LabelInput>
@@ -92,7 +118,7 @@ export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
         )}
         {notCurrentPrice ? (
           <>
-            <Button kind="danger" onClick={tokenQuery.refetch}>Reset to current market price</Button>
+            <Button kind="danger" onClick={handleResetPrice}>Reset to current market price</Button>
           </>
         ) : (
           <>
@@ -100,8 +126,8 @@ export const TokenDisplay: React.FC<{id: string}> = ({id}) => {
               <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
             </div>
             <FlexBox justifyContent="space-between">
-              <span className='TokenDisplay__minmax-price'>{token?.market_data.low_24h.usd || 0}</span>
-              <span className='TokenDisplay__minmax-price'>{token?.market_data.high_24h.usd || 0}</span>
+              <span className='TokenDisplay__minmax-price'>${token?.market_data.low_24h.usd || 0}</span>
+              <span className='TokenDisplay__minmax-price'>${token?.market_data.high_24h.usd || 0}</span>
             </FlexBox>
           </>
         )}

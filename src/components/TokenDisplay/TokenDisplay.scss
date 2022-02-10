@@ -1,5 +1,5 @@
 .TokenDisplay {
-  &__refresh-btn {
+  &__search-btn {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -11,9 +11,6 @@
       span {
         color: white;
       }
-    }
-    span {
-      color: lightgreen;
     }
   }
   &__clear-btn {
@@ -58,7 +55,7 @@
   }
   a {
     font-size: 0.65rem;
-    color: lightblue;
+    color: rgb(88, 153, 175);
     text-decoration: none;
     &:hover {
       color: skyblue;

@@ -6,9 +6,9 @@ import './CollapsibleCard.scss'
 
 export const CollapsibleCard: React.FC<{
   header: ReactNode
-  defaultCollapsed?: boolean
-}> = ({children, header, defaultCollapsed = false}) => {
-  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
+  isCollapsed: boolean
+  onChange: (collapse: boolean) => void
+}> = ({children, header, isCollapsed, onChange}) => {
   const [bodyHeight, setBodyHeight] = useState<number>()
   const bodyRef = useRef<HTMLDivElement>(null)
 
@@ -25,7 +25,7 @@ export const CollapsibleCard: React.FC<{
         <Button
           isRounded
           kind="text"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={() => onChange(!isCollapsed)}
         >
           <FontAwesomeIcon icon={isCollapsed ? faChevronDown : faChevronUp} />
         </Button>

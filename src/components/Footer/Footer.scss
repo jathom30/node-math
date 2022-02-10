@@ -4,9 +4,13 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
   background: white;
+  span {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+  }
   img {
     height: 2.5rem;
     border-radius: 0.5rem;

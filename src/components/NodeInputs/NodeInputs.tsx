@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlexBox, Input, NodeTable } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, tokenPrice } from 'state';
+import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
 import { Button } from 'components/Button';
@@ -16,8 +16,10 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
 
   const token = useRecoilValue(tokenAtom(id))
-  const currentPrice = useRecoilValue(tokenPrice(id))
-  const nodeBuyInPrice = nodecost * currentPrice
+  const currentPrice = token?.market_data.current_price.usd
+  const customPrice = useRecoilValue(userSetPrice(id))
+  // buy in price should first check if a custom price is used, then the current token market price
+  const nodeBuyInPrice = nodecost * (customPrice ?? currentPrice ?? 0)
 
   const isEnabled = () => {
     switch (step) {

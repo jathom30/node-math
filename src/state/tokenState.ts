@@ -11,9 +11,10 @@ export const tokenAtom = atomFamily<Token | undefined, string>({
   effects:[persistAtom]
 });
 
-export const tokenPrice = atomFamily<number, string>({
-  key: 'tokenPrice',
-  default: 0,
+export const userSetPrice = atomFamily<number | undefined, string>({
+  key: 'userSetPrice',
+  default: undefined,
+  effects: [persistAtom]
 })
 
 export const tokenIdAtom = atomFamily<string | undefined, string>({

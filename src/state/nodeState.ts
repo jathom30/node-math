@@ -1,8 +1,14 @@
-import { atomFamily, selectorFamily } from "recoil"
-import { tokenPrice } from "./tokenState"
+import { atom, atomFamily, selectorFamily } from "recoil"
+import { tokenAtom, userSetPrice } from "./tokenState"
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist()
+
+export const nodeIdsAtom = atom<string[]>({
+  key: 'nodeIds',
+  default: ['initial'],
+  effects: [persistAtom]
+})
 
 export const nodeCount = atomFamily({
   key: 'nodeCount',
@@ -39,11 +45,12 @@ export const dailyNodeEarnings = selectorFamily({
   key: 'dailyNodeEarningsSelector',
   get: (config: {id: string, taxType: 'compound' | 'withdraw'}) => ({ get }) => {
     const {id, taxType} = config
-    const currentPrice = get(tokenPrice(id))
+    const marketPrice = get(tokenAtom(id))?.market_data.current_price.usd || 0
+    const currentPrice = get(userSetPrice(id))
     const daily = get(nodeRewards(id))
     const nodecount = get(nodeCount(id))
     const tax = taxType === 'compound' ? get(nodeCompoundTax(id)) : get(nodeWithdrawTax(id))
     const remainderAfterTaxes = (100 - (tax || 0)) / 100
-    return currentPrice * daily * nodecount * remainderAfterTaxes
+    return (currentPrice || marketPrice) * daily * nodecount * remainderAfterTaxes
   }
 })

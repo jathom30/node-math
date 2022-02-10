@@ -6,6 +6,7 @@ import './Footer.scss'
 export const Footer = ({isMobile}: {isMobile: boolean}) => {
   return (
     <div className="Footer">
+      <span><strong>These are not guaranteed rewards.</strong> Please do your own research and invest at your own risk. This is not financial advice.</span>
       <a href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
         <FlexBox alignItems="center">
           {isMobile ? (

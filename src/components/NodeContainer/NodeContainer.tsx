@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, CollapsibleCard, FlexBox, NodeInputs, TokenDisplay, TokenSearch } from 'components';
 import { useRecoilState } from 'recoil';
-import { tokenIdAtom } from 'state';
+import { collapsedAtom, tokenIdAtom } from 'state';
 import './NodeContainer.scss'
 import { SingleValue } from 'react-select';
 import { TokenSearchResult } from 'types';
@@ -16,6 +16,7 @@ export const NodeContainer: React.FC<{
   onCopy: (newId: string, referenceId: string) => void
   canRemove: boolean
 }> = ({id, onRemove, onCopy, canRemove, children}) => {
+  const [isCollapsed, setIsCollapsed] = useRecoilState(collapsedAtom(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const {onCopyNode, cloneId} = useNodes(id)
 
@@ -45,9 +46,11 @@ export const NodeContainer: React.FC<{
         </Box>
       ) : (
         <CollapsibleCard
+          isCollapsed={isCollapsed}
+          onChange={setIsCollapsed}
           header={
             <Box paddingTop="1rem">
-              <TokenDisplay id={id} />
+              <TokenDisplay id={id} isCollapsed={isCollapsed} />
             </Box>
           }
         >
