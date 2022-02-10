@@ -1,30 +1,38 @@
 import { atomFamily, selectorFamily } from "recoil"
 import { tokenPrice } from "./tokenState"
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist()
 
 export const nodeCount = atomFamily({
   key: 'nodeCount',
   default: 1,
+  effects: [persistAtom]
 })
 
 export const nodeCost = atomFamily({
   key: 'nodeCost',
   default: 0,
+  effects: [persistAtom]
 })
 
 // daily node rewards
 export const nodeRewards = atomFamily({
   key: 'nodeRewards',
   default: 0,
+  effects: [persistAtom]
 })
 
 export const nodeWithdrawTax = atomFamily({
   key: 'withdrawTax',
   default: 0,
+  effects: [persistAtom]
 })
 
 export const nodeCompoundTax = atomFamily({
   key: 'nodeCompoundTax',
   default: 0,
+  effects: [persistAtom]
 })
 
 export const dailyNodeEarnings = selectorFamily({
