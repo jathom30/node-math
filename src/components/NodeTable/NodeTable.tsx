@@ -38,8 +38,8 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
       <FlexBox flexDirection='column'>
         <div className="NodeTable__headers">
           <FlexBox flexDirection='column'>
-            <h3>Node Compound Table</h3>
-            <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end">
+            <h3>Node Compound Table (after node compound tax)</h3>
+            <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end" paddingTop="0.25rem">
               <span>Nodes</span>
               <span>Days to compound</span>
               <span>{token?.symbol.toUpperCase()}/day</span>
@@ -70,7 +70,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
 
 const TableRow: React.FC<{row: CompoundData, id: string, earningsPeriod: number}> = ({row, id, earningsPeriod}) => {
   const nodecount = useRecoilValue(nodeCount(id))
-  const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
+  const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'compound'}))
 
   const getDailyEarnings = (numberOfNodes: number) => {
     const daily = dailyEarnings * numberOfNodes / nodecount

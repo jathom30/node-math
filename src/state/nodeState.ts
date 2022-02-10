@@ -22,13 +22,19 @@ export const nodeWithdrawTax = atomFamily({
   default: 0,
 })
 
+export const nodeCompoundTax = atomFamily({
+  key: 'nodeCompoundTax',
+  default: 0,
+})
+
 export const dailyNodeEarnings = selectorFamily({
   key: 'dailyNodeEarningsSelector',
-  get: (id: string) => ({ get }) => {
+  get: (config: {id: string, taxType: 'compound' | 'withdraw'}) => ({ get }) => {
+    const {id, taxType} = config
     const currentPrice = get(tokenPrice(id))
     const daily = get(nodeRewards(id))
     const nodecount = get(nodeCount(id))
-    const tax = get(nodeWithdrawTax(id))
+    const tax = taxType === 'compound' ? get(nodeCompoundTax(id)) : get(nodeWithdrawTax(id))
     const remainderAfterTaxes = (100 - (tax || 0)) / 100
     return currentPrice * daily * nodecount * remainderAfterTaxes
   }

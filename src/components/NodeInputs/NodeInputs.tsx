@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlexBox, Input, NodeTable } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, tokenPrice } from 'state';
+import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, tokenPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
 import { Button } from 'components/Button';
@@ -12,7 +12,8 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [nodecost, setNodecost] = useRecoilState(nodeCost(id))
   const [daily, setDaily] = useRecoilState(nodeRewards(id))
   const [tax, setTax] = useRecoilState(nodeWithdrawTax(id))
-  const dailyEarnings = useRecoilValue(dailyNodeEarnings(id))
+  const [compountTax, setCompoundTax] = useRecoilState(nodeCompoundTax(id))
+  const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
 
   const token = useRecoilValue(tokenAtom(id))
   const currentPrice = useRecoilValue(tokenPrice(id))
@@ -74,10 +75,17 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
                 step={0.001}
               />
               <Input
-                label={`Withdraw tax (%)`}
+                label={`Claim tax (%)`}
                 name="tax"
                 value={tax}
                 onChange={(val) => setTax(parseFloat(val))}
+                step={0.1}
+              />
+              <Input
+                label={`Compound tax (%)`}
+                name="compound-tax"
+                value={compountTax}
+                onChange={(val) => setCompoundTax(parseFloat(val))}
                 step={0.1}
               />
             </>
@@ -85,7 +93,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 2 &&
           <>
           <FlexBox flexDirection='column' gap="0.25rem">
-            <h3>Earnings at current price after tax (USD)</h3>
+            <h3>Earnings at current price after claim tax (USD)</h3>
             <div className="NodeInputs__box">
               <p><span>(Daily)</span> {toCurrency(getEarnings(1))}</p>
               <p><span>(Weekly)</span> {toCurrency(getEarnings(7))}</p>
