@@ -68,10 +68,19 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
           <FlexBox justifyContent="space-between" alignItems="center">
             <FlexBox gap="0.5rem" alignItems="center">
               <img className="TokenDisplay__img" src={token?.image.small} alt={token?.name} />
-              <h3>{token?.name} ({token?.symbol.toUpperCase()})</h3>
+              <button className='TokenDisplay__search-btn' onClick={() => setShowSearch(true)}>
+                <FlexBox gap="0.5rem" alignItems="center">
+                  <h2>{token?.name} ({token?.symbol.toUpperCase()})</h2>
+                  <span><FontAwesomeIcon icon={faSearch} /></span>
+                </FlexBox>
+              </button>
             </FlexBox>
             <FlexBox gap="0.5rem" alignItems="center">
-              <h2>${price || currentPrice} <span>USD</span></h2>
+              {tokenQuery.isFetching ? (
+                <h2 className="TokenDisplay__loading"><FontAwesomeIcon icon={faSpinner} /></h2>
+              ) : (
+                <h2>${price || currentPrice} <span>USD</span></h2>
+              )}
               <Button kind="copy" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
             </FlexBox>
           </FlexBox>
@@ -83,6 +92,13 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
             <span className='TokenDisplay__minmax-price'>${token?.market_data.high_24h.usd || 0}</span>
           </FlexBox>
         </FlexBox>
+        {showSearch && (
+          <Modal offClick={() => setShowSearch(false)}>
+            <div className="TokenDisplay__modal">
+              <TokenSearch onChange={handleSelectToken} />
+            </div>
+          </Modal>
+        )}
       </div>
     )
   }
@@ -105,7 +121,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
       
       <FlexBox flexDirection='column' gap="0.25rem">
         {tokenQuery.isFetching ? (
-          <h1><FontAwesomeIcon icon={faSpinner} /></h1>
+          <h1 className='TokenDisplay__loading'><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
           <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
             <LabelInput value={price || currentPrice} onSubmit={handleSetPrice}>

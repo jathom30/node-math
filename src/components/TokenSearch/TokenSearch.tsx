@@ -24,6 +24,8 @@ export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchRes
         name="coin-search"
         inputValue={search}
         onInputChange={setSearch}
+        placeholder="Search here..."
+        autoFocus
         isLoading={searchQuery.isLoading}
         isSearchable
         getOptionLabel={(option: TokenSearchResult) => `${option.name} (${option.symbol})`}

@@ -28,6 +28,10 @@
       background: darkgrey;
     }
   }
+  &__loading {
+    width: min-content;
+    animation: spin 1s infinite forwards;
+  }
   &__money-bar {
     height: 1rem;
     width: 100%;
@@ -60,5 +64,14 @@
     &:hover {
       color: skyblue;
     }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(0);
+  }
+  from {
+    transform: rotate(-360deg);
   }
 }
