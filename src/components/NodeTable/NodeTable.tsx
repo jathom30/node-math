@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom, nodeFee } from 'state';
 import './NodeTable.scss'
 
 const earningsPeriods = [
@@ -38,7 +38,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
       <FlexBox flexDirection='column'>
         <div className="NodeTable__headers">
           <FlexBox flexDirection='column'>
-            <h3>Node Compound Table (after node compound tax)</h3>
+            <h3>Node Compound Table (after node compound tax and monthly fee)</h3>
             <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end" paddingTop="0.25rem">
               <span>Nodes</span>
               <span>Days to compound</span>

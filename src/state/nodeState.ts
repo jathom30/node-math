@@ -41,6 +41,12 @@ export const nodeCompoundTax = atomFamily({
   effects: [persistAtom]
 })
 
+export const nodeFee = atomFamily<number | undefined, string>({
+  key: 'nodeFee',
+  default: undefined,
+  effects: [persistAtom]
+})
+
 export const dailyNodeEarnings = selectorFamily({
   key: 'dailyNodeEarningsSelector',
   get: (config: {id: string, taxType: 'compound' | 'withdraw'}) => ({ get }) => {
@@ -49,8 +55,11 @@ export const dailyNodeEarnings = selectorFamily({
     const currentPrice = get(userSetPrice(id))
     const daily = get(nodeRewards(id))
     const nodecount = get(nodeCount(id))
+    const monthlyFee = get(nodeFee(id))
+    // assumes 30 day month for easier math
+    const dailyFee = monthlyFee ? monthlyFee / 30 : 0
     const tax = taxType === 'compound' ? get(nodeCompoundTax(id)) : get(nodeWithdrawTax(id))
     const remainderAfterTaxes = (100 - (tax || 0)) / 100
-    return (currentPrice || marketPrice) * daily * nodecount * remainderAfterTaxes
+    return (currentPrice || marketPrice) * daily * nodecount * remainderAfterTaxes - dailyFee
   }
 })

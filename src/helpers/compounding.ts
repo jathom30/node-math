@@ -4,8 +4,8 @@ export type CompoundData = {
   rewards: number;
 }
 
-export const createCompoundData = (tokensPerNode: number, dailyReward: number, startingNodeCount: number, maxNodeCount?: number) => {
-  const totalNodes = maxNodeCount || 100
+export const createCompoundData = (tokensPerNode: number, dailyReward: number, startingNodeCount: number) => {
+  const totalNodes = 100
   const nodes = Array.from({length: totalNodes}, (_, i) => i + 1).splice(startingNodeCount - 1, totalNodes)
   const getDay = (prevDayCount: number, reward: number) => {
     return tokensPerNode / reward + prevDayCount

@@ -1,5 +1,5 @@
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { collapsedAtom, nodeCompoundTax, nodeCost, nodeCount, nodeRewards, nodeWithdrawTax, stepAtom, tokenIdAtom, userSetPrice } from 'state';
+import { collapsedAtom, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeWithdrawTax, stepAtom, tokenIdAtom, userSetPrice } from 'state';
 import {v4 as uuid }from 'uuid'
 
 export const useNodes = (id: string) => {
@@ -12,6 +12,7 @@ export const useNodes = (id: string) => {
   const step = useRecoilValue(stepAtom(id))
   const userPrice = useRecoilValue(userSetPrice(id))
   const isCollapsed = useRecoilValue(collapsedAtom(id))
+  const fee = useRecoilValue(nodeFee(id))
 
   const cloneId = uuid()
 
@@ -24,6 +25,7 @@ export const useNodes = (id: string) => {
   const setUserPrice = useSetRecoilState(userSetPrice(cloneId))
   const setIsCollapsed = useSetRecoilState(collapsedAtom(cloneId))
   const setCompoundTax = useSetRecoilState(nodeCompoundTax(cloneId))
+  const setNodeFee = useSetRecoilState(nodeFee(cloneId))
 
   const onCopyNode = () => {
     setClonedTokenId(tokenId)
@@ -35,6 +37,7 @@ export const useNodes = (id: string) => {
     setStep(step)
     setUserPrice(userPrice)
     setIsCollapsed(isCollapsed)
+    setNodeFee(fee)
   }
 
   return {onCopyNode, cloneId}
