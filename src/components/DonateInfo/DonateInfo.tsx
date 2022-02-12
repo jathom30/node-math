@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, FlexBox } from 'components';
@@ -59,13 +59,21 @@ const fallback = (text: string) => {
 };
 
 const WalletDisplay = ({label, address}: {label: string; address: string}) => {
+  const [showSuccess, setShowSuccess] = useState(false)
   const handleCopy = () => {
     if (!navigator.clipboard) {
       fallback(address);
       return;
     }
     navigator.clipboard.writeText(address)
+    setShowSuccess(true)
   }
+
+  useEffect(() => {
+    if (showSuccess) {
+      setTimeout(() => setShowSuccess(false), 900)
+    }
+  }, [showSuccess, setShowSuccess])
 
   return (
     <div className="WalletDisplay">
@@ -76,9 +84,12 @@ const WalletDisplay = ({label, address}: {label: string; address: string}) => {
       <div className="WalletDisplay__group">
         <span className='WalletDisplay__label'>Wallet</span>
         <span className='WalletDisplay__address'>{address}</span>
-        <Button isRounded kind="copy" onClick={handleCopy}>
-          <FontAwesomeIcon icon={faCopy} />
-        </Button>
+        <div className='WalletDisplay__copy-btn'>
+        {showSuccess && <span className='WalletDisplay__copy-success'>Copied!</span>}
+          <Button isRounded kind="copy" onClick={handleCopy}>
+            <FontAwesomeIcon icon={faCopy} />
+          </Button>
+        </div>
       </div>
     </div>
   )

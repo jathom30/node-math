@@ -50,4 +50,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  &__copy-btn {
+    position: relative;
+  }
+  &__copy-success {
+    position: absolute;
+    right: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    background: lightgreen;
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+    color: darkgreen;
+  }
 }
