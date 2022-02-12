@@ -20,7 +20,7 @@ export const DonateInfo = ({onClose}: {onClose: () => void}) => {
         <div className='DonateInfo__wallets'>
           <p><strong>We are accepting donations to the following wallets</strong></p>
           <WalletDisplay label="BTC" address={btcWallet} />
-          <WalletDisplay label="ETH • FTM • AVAX • BMB" address={ethWallet} />
+          <WalletDisplay label="ETH • FTM • AVAX • BNB" address={ethWallet} />
         </div>
       </FlexBox>
     </div>
