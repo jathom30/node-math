@@ -27,7 +27,7 @@ export const DonateInfo = ({onClose}: {onClose: () => void}) => {
   )
 }
 
-const fallback = (text: string) => {
+const fallback = (text: string, onSucces: () => void) => {
   const isIos = navigator.userAgent.match(/ipad|iphone/i);
   const textarea = document.createElement('textarea');
 
@@ -56,17 +56,17 @@ const fallback = (text: string) => {
 
   // cleanup
   document.body.removeChild(textarea);
+  onSucces()
 };
 
 const WalletDisplay = ({label, address}: {label: string; address: string}) => {
   const [showSuccess, setShowSuccess] = useState(false)
   const handleCopy = () => {
     if (!navigator.clipboard) {
-      fallback(address);
+      fallback(address, () => setShowSuccess(true));
       return;
     }
-    navigator.clipboard.writeText(address)
-    setShowSuccess(true)
+    navigator.clipboard.writeText(address).then(() => setShowSuccess(true))
   }
 
   useEffect(() => {
