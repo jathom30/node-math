@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom, nodeFee } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom } from 'state';
 import './NodeTable.scss'
 
 const earningsPeriods = [
