@@ -1,4 +1,4 @@
-import { atomFamily } from "recoil";
+import { atom, atomFamily } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist()
@@ -13,4 +13,9 @@ export const collapsedAtom = atomFamily({
   key: 'collapsedAtom',
   default: false,
   effects: [persistAtom],
+})
+
+export const widthAtom = atom({
+  key: 'widthAtom',
+  default: 0,
 })

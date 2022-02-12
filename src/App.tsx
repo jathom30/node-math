@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.scss'
 import { MaxHeightContainer, NodeContainer, Header, Footer } from 'components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,7 @@ import { faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
 import {v4 as uuid }from 'uuid'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
-import { nodeIdsAtom } from 'state';
+import { nodeIdsAtom, widthAtom } from 'state';
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   const result = Array.from(list);
@@ -18,7 +18,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
-  const [width, setWidth] = useState(0)
+  const [width, setWidth] = useRecoilState(widthAtom)
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,7 +29,7 @@ function App() {
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  }, [setWidth])
 
   const handleNewNode = () => {
     setNodeIds([
@@ -75,11 +75,11 @@ function App() {
         <div className={`App__wrapper ${columnView ? 'App__wrapper--columns': ''}`}>
           <DragDropContext onDragEnd={handleDradEnd}>
             <Droppable droppableId='droppable' direction={columnView ? 'vertical' : 'horizontal'}>
-              {(provided, snapshot) => (
+              {(provided) => (
                 <div className={`App__droppable ${columnView ? 'App__droppable--columns' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
                     {nodeIds.map((nodeId, i) => (
                       <Draggable key={nodeId} draggableId={nodeId} index={i}>
-                        {(provided, snapshot) => (
+                        {(provided) => (
                           <div className='App__draggable' ref={provided.innerRef} {...provided.draggableProps}>
                             <NodeContainer
                               id={nodeId}
@@ -93,6 +93,7 @@ function App() {
                         )}
                       </Draggable>
                     ))}
+                    {provided.placeholder}
                 </div>
               )}
             </Droppable>

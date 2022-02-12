@@ -1,0 +1,53 @@
+.DonateInfo {
+  padding: 1rem;
+  background-color: white;
+  margin: 1rem;
+  border-radius: 1rem;
+  max-height: 90vh;
+  overflow: auto;
+  text-align: center;
+  &__hr {
+    height: 1px;
+    background: lightgrey;
+    width: 80%;
+    margin: 0 auto;
+  }
+  &__wallets {
+    margin: 0 auto;
+    max-width: 100%;
+    p {
+      padding-bottom: 1rem;
+    }
+  }
+  h2 span {
+    color: rgb(121, 182, 202);
+    white-space: nowrap;
+    font-size: 1.75rem;
+  }
+}
+
+.WalletDisplay {
+  padding-bottom: 1rem;
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+  &__group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  &__label {
+    font-weight: bold;
+    font-size: 0.8rem;
+    justify-self: flex-end;
+  }
+  &__address {
+    background: lightgrey;
+    font-size: 0.8rem;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    font-family: "Courier New", Courier, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
