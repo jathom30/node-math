@@ -1,14 +1,13 @@
 import React from 'react';
-import { Box, CollapsibleCard, FlexBox, NodeInputs, TokenDisplay, TokenSearch } from 'components';
+import { Box, CollapsibleCard, FlexBox, NodeInputs, TokenDisplay, TokenSearch, Button } from 'components';
 import { useRecoilState } from 'recoil';
 import { collapsedAtom, tokenIdAtom } from 'state';
-import './NodeContainer.scss'
 import { SingleValue } from 'react-select';
 import { TokenSearchResult } from 'types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClone, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useNodes } from 'hooks/useNodes';
-import { Button } from 'components/Button';
+import './NodeContainer.scss'
 
 export const NodeContainer: React.FC<{
   id: string
