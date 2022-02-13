@@ -8,6 +8,7 @@ import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice } from 'state';
 import { TokenSearchResult } from 'types';
+import ReactGA from 'react-ga'
 import './TokenDisplay.scss'
 
 export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id, isCollapsed = false}) => {
@@ -39,11 +40,20 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
   const percDiff = 100 - currentDiff / dayDiff * 100
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
+    ReactGA.event({
+      category: 'Token',
+      action: 'Select',
+      label: token?.id,
+    })
     setTokenId(token?.id)
     setShowSearch(false)
   }
 
   const handleSetPrice = (newPrice: number | string) => {
+    ReactGA.event({
+      category: 'Token',
+      action: 'Custom price',
+    })
     if (typeof newPrice === 'string') {
       setPrice(parseFloat(newPrice))
     } else {
@@ -54,6 +64,10 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
   const notCurrentPrice = price && price !== currentPrice
 
   const handleResetPrice = () => {
+    ReactGA.event({
+      category: 'Token',
+      action: 'Refetch',
+    })
     tokenQuery.refetch()
     setPrice(undefined)
   }

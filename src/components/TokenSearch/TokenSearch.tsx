@@ -5,6 +5,7 @@ import { searchToken } from 'api';
 import { useDebounce } from 'hooks';
 import { TokenSearchResult } from 'types';
 import { COIN_SEARCH_QUERY } from 'state';
+import ReactGA from 'react-ga'
 import './TokenSearch.scss'
 
 export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchResult>) => void}> = ({onChange}) => {
@@ -14,7 +15,14 @@ export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchRes
 
   const searchQuery = useQuery(
     [COIN_SEARCH_QUERY, debouncedSearch],
-    () => searchToken(debouncedSearch),
+    () => {
+      ReactGA.event({
+        category: 'Token',
+        action: 'Search',
+        label: debouncedSearch,
+      })
+      return searchToken(debouncedSearch)
+    },
     {enabled: debouncedSearch !== ''},
   )
 
