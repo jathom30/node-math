@@ -39,7 +39,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   }
 
   return (
-    <div className="NodeInputs">
+    <form className="NodeInputs">
       <FlexBox flexDirection='column' gap="1rem">
         <FlexBox flexDirection='column' gap="1rem">
           <Input
@@ -125,6 +125,6 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           Continue
         </Button>}
       </FlexBox>
-    </div>
+    </form>
   )
 }
