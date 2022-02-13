@@ -3,18 +3,11 @@ import './App.scss'
 import { MaxHeightContainer, NodeContainer, Header, Footer } from 'components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
-import {v4 as uuid }from 'uuid'
+import { v4 as uuid }from 'uuid'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
 import { nodeIdsAtom, widthAtom } from 'state';
-
-function reorder<T>(list: T[], startIndex: number, endIndex: number) {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
+import { reorder } from 'helpers';
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
@@ -100,7 +93,6 @@ function App() {
           </DragDropContext>
         </div>
       </MaxHeightContainer>
-
     </div>
   );
 }

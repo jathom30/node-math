@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, FlexBox } from 'components';
+import { copyFallback } from 'helpers';
 import './DonateInfo.scss'
 
 const btcWallet = '32fm2iAivoqLrMLPdjpy1z1XYKpZHq2y5D'
@@ -27,43 +28,11 @@ export const DonateInfo = ({onClose}: {onClose: () => void}) => {
   )
 }
 
-const fallback = (text: string, onSucces: () => void) => {
-  const isIos = navigator.userAgent.match(/ipad|iphone/i);
-  const textarea = document.createElement('textarea');
-
-  // create textarea
-  textarea.value = text;
-
-  // ios will zoom in on the input if the font-size is < 16px
-  textarea.style.fontSize = '20px';
-  document.body.appendChild(textarea);
-
-  // select text
-  if (isIos) {
-    const range = document.createRange();
-    range.selectNodeContents(textarea);
-
-    const selection = window.getSelection();
-    selection?.removeAllRanges();
-    selection?.addRange(range);
-    textarea.setSelectionRange(0, 999999);
-  } else {
-    textarea.select();
-  }
-
-  // copy selection
-  document.execCommand('copy');
-
-  // cleanup
-  document.body.removeChild(textarea);
-  onSucces()
-};
-
 const WalletDisplay = ({label, address}: {label: string; address: string}) => {
   const [showSuccess, setShowSuccess] = useState(false)
   const handleCopy = () => {
     if (!navigator.clipboard) {
-      fallback(address, () => setShowSuccess(true));
+      copyFallback(address, () => setShowSuccess(true));
       return;
     }
     navigator.clipboard.writeText(address).then(() => setShowSuccess(true))

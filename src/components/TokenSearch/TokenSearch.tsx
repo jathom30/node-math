@@ -4,6 +4,7 @@ import Select, { SingleValue } from 'react-select';
 import { searchToken } from 'api';
 import { useDebounce } from 'hooks';
 import { TokenSearchResult } from 'types';
+import { COIN_SEARCH_QUERY } from 'state';
 import './TokenSearch.scss'
 
 export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchResult>) => void}> = ({onChange}) => {
@@ -12,7 +13,7 @@ export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchRes
   const debouncedSearch = useDebounce(search, 300)
 
   const searchQuery = useQuery(
-    ['coin', debouncedSearch],
+    [COIN_SEARCH_QUERY, debouncedSearch],
     () => searchToken(debouncedSearch),
     {enabled: debouncedSearch !== ''},
   )

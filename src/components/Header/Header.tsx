@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { faDonate, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, FlexBox, Modal } from 'components';
-import { DonateInfo } from 'components/DonateInfo';
-import './Header.scss'
+import { Button, FlexBox, Modal, DonateInfo } from 'components';
 import { useRecoilValue } from 'recoil';
 import { widthAtom } from 'state';
+import './Header.scss'
 
 export const Header = ({onClick}: {onClick: () => void}) => {
   const width = useRecoilValue(widthAtom)

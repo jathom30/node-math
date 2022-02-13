@@ -1,10 +1,9 @@
 import React from 'react';
-import { FlexBox, Input, NodeTable } from 'components';
+import { FlexBox, Input, NodeTable, Button } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
-import { Button } from 'components/Button';
 
 export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [step, setStep] = useRecoilState(stepAtom(id))

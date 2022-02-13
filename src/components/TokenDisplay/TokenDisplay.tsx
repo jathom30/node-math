@@ -1,15 +1,13 @@
 import { faEdit, faSearch, faSpinner, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getToken } from 'api';
-import { LabelInput, Modal, TokenSearch } from 'components';
-import { Button } from 'components/Button';
+import { LabelInput, Modal, TokenSearch, FlexBox, Button } from 'components';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { tokenAtom, tokenIdAtom, userSetPrice } from 'state/tokenState';
+import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice } from 'state';
 import { TokenSearchResult } from 'types';
-import { FlexBox } from '../Box';
 import './TokenDisplay.scss'
 
 export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id, isCollapsed = false}) => {
@@ -18,7 +16,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
   const [price, setPrice] = useRecoilState(userSetPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const tokenQuery = useQuery(
-    ['token', tokenId, id],
+    [TOKEN_QUERY, tokenId, id],
     () => tokenId ? getToken(tokenId) : undefined,
     {
       enabled: !!tokenId,
