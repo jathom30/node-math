@@ -34,7 +34,7 @@ const WalletDisplay = ({label, address}: {label: string; address: string}) => {
   const handleCopy = () => {
     ReactGA.event({
       category: 'Donate',
-      action: 'Copy address',
+      action: 'Copy',
       label,
     })
     if (!navigator.clipboard) {
