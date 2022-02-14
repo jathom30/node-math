@@ -8,18 +8,16 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { useRecoilState } from 'recoil';
 import { nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
-import gtag, { install } from 'ga-gtag';
+import ReactGA from 'react-ga'
 
-// const GA3 = 'UA-220159309-1'
-const GA4 = "G-6CBJQ7M3ZD"
-
+const GA3 = 'UA-220159309-1'
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
   const [width, setWidth] = useRecoilState(widthAtom)
   
   useEffect(() => {
-    install(GA4)
+    ReactGA.initialize(GA3)
   }, [])
 
   useEffect(() => {
@@ -34,7 +32,10 @@ function App() {
   }, [setWidth])
 
   const handleNewNode = () => {
-    gtag('event', 'create_card')
+    ReactGA.event({
+      category: 'Card',
+      action: 'Create'
+    })
     setNodeIds([
       uuid(),
       ...nodeIds,
@@ -42,12 +43,18 @@ function App() {
   }
 
   const handleRemoveNode = (id: string) => {
-    gtag('event', 'delete_card')
+    ReactGA.event({
+      category: 'Card',
+      action: 'Delete'
+    })
     setNodeIds(nodeIds.filter(node => node !== id))
   }
 
   const handleCopyNode = (newId: string, referenceId: string) => {
-    gtag('event', 'clone_card')
+    ReactGA.event({
+      category: 'Card',
+      action: 'Clone'
+    })
     const originalIndex = nodeIds.findIndex(nodeId => nodeId === referenceId)
     const newIndex = originalIndex+1
     // add newId directly after referenceId
@@ -55,7 +62,10 @@ function App() {
   }
 
   const handleDradEnd = (result: DropResult) => {
-    gtag('event', 'drag_card')
+    ReactGA.event({
+      category: 'Card',
+      action: 'Drag'
+    })
     setNodeIds(prevNodeIds => {
       // dropped outside the list
       if (!result.destination) {

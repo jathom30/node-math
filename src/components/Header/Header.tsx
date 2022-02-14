@@ -4,11 +4,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, FlexBox, Modal, DonateInfo } from 'components';
 import { useRecoilValue } from 'recoil';
 import { widthAtom } from 'state';
+import ReactGA from 'react-ga'
 import './Header.scss'
 
 export const Header = ({onClick}: {onClick: () => void}) => {
   const width = useRecoilValue(widthAtom)
   const [showDonate, setShowDonate] = useState(false)
+
+  const handleShowDonateModal = () => {
+    ReactGA.event({
+      category: 'Donate',
+      action: 'Show'
+    })
+    setShowDonate(true)
+  }
 
   const mobileView = width < 600
   return (
@@ -16,7 +25,7 @@ export const Header = ({onClick}: {onClick: () => void}) => {
       <FlexBox justifyContent="space-between" alignItems="center">
         <span>Crypto Node Calculator</span>
         <FlexBox gap="1rem">
-          <Button isRounded kind="copy" onClick={() => setShowDonate(true)}>
+          <Button isRounded kind="copy" onClick={handleShowDonateModal}>
             <FlexBox gap=".5rem" alignItems="center" padding='0 .5rem'>
               {!mobileView && <span>Donate</span>}
               <FontAwesomeIcon icon={faDonate} />
