@@ -8,18 +8,27 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { useRecoilState } from 'recoil';
 import { nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
-import ReactGA from 'react-ga4'
+import ReactGA from 'react-ga'
+// import GA4React from "ga-4-react";
+// import gtag, { install } from 'ga-gtag';
+
+const GA3 = 'UA-220159309-1'
+// const GA4 = "G-6CBJQ7M3ZD"
+// const ga4react = new GA4React(GA4, {debug_mode: true});
 
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
   const [width, setWidth] = useRecoilState(widthAtom)
   
-  // inititalize google analytics
   useEffect(() => {
-    ReactGA.initialize('UA-220159309-1')
+    // install(GA4, {debug_mode: true})
+    ReactGA.initialize(GA3)
+    // ga4react.initialize()
   }, [])
 
+  // console.log(ga4react)
+  
   useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth)
@@ -32,6 +41,9 @@ function App() {
   }, [setWidth])
 
   const handleNewNode = () => {
+    // gtag('event', 'create_card', { 'debug_mode':true })
+    // ga4react.gtag('event', 'create_card')
+    // ga4react.event('click', 'create', 'card')
     ReactGA.event({
       category: 'Card',
       action: 'Create',
@@ -43,18 +55,18 @@ function App() {
   }
 
   const handleRemoveNode = (id: string) => {
-    ReactGA.event({
-      category: 'Card',
-      action: 'Delete',
-    })
+    // ReactGA.event({
+    //   category: 'Card',
+    //   action: 'Delete',
+    // })
     setNodeIds(nodeIds.filter(node => node !== id))
   }
 
   const handleCopyNode = (newId: string, referenceId: string) => {
-    ReactGA.event({
-      category: 'Card',
-      action: 'Clone',
-    })
+    // ReactGA.event({
+    //   category: 'Card',
+    //   action: 'Clone',
+    // })
     const originalIndex = nodeIds.findIndex(nodeId => nodeId === referenceId)
     const newIndex = originalIndex+1
     // add newId directly after referenceId
@@ -62,10 +74,10 @@ function App() {
   }
 
   const handleDradEnd = (result: DropResult) => {
-    ReactGA.event({
-      category: 'Card',
-      action: 'Drag-and-drop'
-    })
+    // ReactGA.event({
+    //   category: 'Card',
+    //   action: 'Drag-and-drop'
+    // })
     setNodeIds(prevNodeIds => {
       // dropped outside the list
       if (!result.destination) {
