@@ -3,6 +3,7 @@ import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, FlexBox } from 'components';
 import { copyFallback } from 'helpers';
+import ReactGA from 'react-ga'
 import './DonateInfo.scss'
 
 const btcWallet = '32fm2iAivoqLrMLPdjpy1z1XYKpZHq2y5D'
@@ -31,6 +32,11 @@ export const DonateInfo = ({onClose}: {onClose: () => void}) => {
 const WalletDisplay = ({label, address}: {label: string; address: string}) => {
   const [showSuccess, setShowSuccess] = useState(false)
   const handleCopy = () => {
+    ReactGA.event({
+      category: 'Donate',
+      action: 'Copy',
+      label,
+    })
     if (!navigator.clipboard) {
       copyFallback(address, () => setShowSuccess(true));
       return;

@@ -5,7 +5,7 @@ import { searchToken } from 'api';
 import { useDebounce } from 'hooks';
 import { TokenSearchResult } from 'types';
 import { COIN_SEARCH_QUERY } from 'state';
-import ReactGA from 'react-ga4'
+import ReactGA from 'react-ga'
 import './TokenSearch.scss'
 
 export const TokenSearch: React.FC<{onChange: (token: SingleValue<TokenSearchResult>) => void}> = ({onChange}) => {
