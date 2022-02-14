@@ -10,7 +10,7 @@ import { nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
 import ReactGA from 'react-ga'
 
-const GA3 = 'UA-220159309-1'
+const GA3 = 'UA-120851599-3'
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
