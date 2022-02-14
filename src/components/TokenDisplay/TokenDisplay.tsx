@@ -8,7 +8,7 @@ import { SingleValue } from 'react-select';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice } from 'state';
 import { TokenSearchResult } from 'types';
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import './TokenDisplay.scss'
 
 export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id, isCollapsed = false}) => {

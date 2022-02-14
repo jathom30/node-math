@@ -8,16 +8,16 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { useRecoilState } from 'recoil';
 import { nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
+
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
   const [width, setWidth] = useRecoilState(widthAtom)
-
+  
   // inititalize google analytics
   useEffect(() => {
-    ReactGA.initialize('G-6CBJQ7M3ZD')
-    ReactGA.pageview('home-pageview')
+    ReactGA.initialize('UA-220159309-1')
   }, [])
 
   useEffect(() => {
