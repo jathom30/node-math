@@ -5,7 +5,7 @@ export const Button: React.FC<{
   onClick: () => void,
   isRounded?: boolean,
   isDisabled?: boolean
-  kind?: 'default' | 'primary' | 'danger' | 'text' | 'copy'
+  kind?: 'default' | 'primary' | 'danger' | 'text' | 'secondary'
   width?: string
 }> = ({children, onClick, isRounded = false, kind = 'default', isDisabled = false, width}) => {
   const buttonKindClass = `Button__${kind}`

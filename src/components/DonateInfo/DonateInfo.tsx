@@ -61,7 +61,7 @@ const WalletDisplay = ({label, address}: {label: string; address: string}) => {
         <span className='WalletDisplay__address'>{address}</span>
         <div className='WalletDisplay__copy-btn'>
         {showSuccess && <span className='WalletDisplay__copy-success'>Copied!</span>}
-          <Button isRounded kind="copy" onClick={handleCopy}>
+          <Button isRounded kind="secondary" onClick={handleCopy}>
             <FontAwesomeIcon icon={faCopy} />
           </Button>
         </div>

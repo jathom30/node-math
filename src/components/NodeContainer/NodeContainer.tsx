@@ -34,7 +34,7 @@ export const NodeContainer: React.FC<{
         <FlexBox justifyContent="space-between">
           {children}
           <FlexBox justifyContent="flex-end" gap="1rem">
-            <Button isRounded kind='copy' onClick={handleCopyNode}><FontAwesomeIcon icon={faClone} /></Button>
+            <Button isRounded kind='secondary' onClick={handleCopyNode}><FontAwesomeIcon icon={faClone} /></Button>
             <Button isRounded kind="danger" onClick={() => onRemove(id)}><FontAwesomeIcon icon={faTrash} /></Button>
           </FlexBox>
         </FlexBox>

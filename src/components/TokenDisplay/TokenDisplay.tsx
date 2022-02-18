@@ -96,7 +96,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
               ) : (
                 <h2>${price || currentPrice} <span>USD</span></h2>
               )}
-              <Button kind="copy" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
+              <Button kind="secondary" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
             </FlexBox>
           </FlexBox>
           <div className="TokenDisplay__money-bar">
@@ -130,7 +130,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
           </button>
         </FlexBox>
         <FlexBox gap="1rem">
-          <Button isRounded kind="copy" onClick={() => tokenQuery.refetch()}><FontAwesomeIcon icon={faSync} /></Button>
+          <Button isRounded kind="secondary" onClick={() => tokenQuery.refetch()}><FontAwesomeIcon icon={faSync} /></Button>
         </FlexBox>
       </FlexBox>
       
