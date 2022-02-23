@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlexBox, Input, NodeTable, Button } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
+import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeSalesTax, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
 
@@ -12,6 +12,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [daily, setDaily] = useRecoilState(nodeRewards(id))
   const [tax, setTax] = useRecoilState(nodeWithdrawTax(id))
   const [compountTax, setCompoundTax] = useRecoilState(nodeCompoundTax(id))
+  const [salesTax, setSalesTax] = useRecoilState(nodeSalesTax(id))
   const [fee, setFee] = useRecoilState(nodeFee(id))
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
 
@@ -38,21 +39,42 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
     return dailyEarnings * days
   }
 
+  // const priceData = [
+  //   {
+  //     title: 'compound tax',
+  //     value: compountTax, 
+  //   },
+  //   {
+  //     title: 'claim tax',
+  //     value: tax, 
+  //   },
+  //   {
+  //     title: 'sales tax',
+  //     value: salesTax, 
+  //   },
+  //   {
+  //     title: 'node fee',
+  //     value: fee, 
+  //   },
+  // ]
+
   return (
     <div className="NodeInputs">
       <FlexBox flexDirection='column' gap="1rem">
         <FlexBox flexDirection='column' gap="1rem">
           <Input
-            label='Node count'
+            label='[Required] Node count'
             name="nodecount"
             value={nodecount}
             onChange={(val) => setNodecount(parseFloat(val))}
+            required
           />
           {step > 0 && <Input
-            label={`Node cost (in ${token?.symbol.toUpperCase()} tokens)`}
+            label={`[Required] Node cost (in ${token?.symbol.toUpperCase()} tokens)`}
             name="nodecost"
             value={nodecost}
             onChange={(val) => setNodecost(parseFloat(val))}
+            required
           />}
           {step > 1 && (
             <FlexBox flexDirection='column' gap="0.25rem">
@@ -70,17 +92,25 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 1 && (
             <>
               <Input
-                label={`Daily node rewards (${token?.symbol.toUpperCase()})`}
+                label={`[Required] Daily node rewards (${token?.symbol.toUpperCase()})`}
                 name="daily"
                 value={daily}
                 onChange={(val) => setDaily(parseFloat(val))}
                 step={0.001}
+                required
               />
               <Input
                 label={`Claim tax (%)`}
                 name="tax"
                 value={tax}
                 onChange={(val) => setTax(parseFloat(val))}
+                step={0.1}
+              />
+              <Input
+                label={`Sales tax (%)`}
+                name="sales-tax"
+                value={salesTax}
+                onChange={(val) => setSalesTax(parseFloat(val))}
                 step={0.1}
               />
               <Input
@@ -102,13 +132,14 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 2 &&
           <>
           <FlexBox flexDirection='column' gap="0.25rem">
-            <h3>Earnings at current price after claim tax and node fee (USD)</h3>
+            <h3>Earnings at current price after claim tax, sales tax, and node fee (USD)</h3>
             <div className="NodeInputs__box">
               <p><span>(Daily)</span> {toCurrency(getEarnings(1))}</p>
               <p><span>(Weekly)</span> {toCurrency(getEarnings(7))}</p>
               <p><span>(30 day month)</span> {toCurrency(getEarnings(30))}</p>
               <p><span>(Yearly)</span> {toCurrency(getEarnings(365))}</p>
             </div>
+            {/* <EarningsPieChart data={priceData} /> */}
           </FlexBox>
           <FlexBox flexDirection='column' gap="0.25rem">
             <h3>Number of days to ROI/compound (rounded up)</h3>

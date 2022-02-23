@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import './Input.scss'
 
 export const Input: React.FC<{
-  label: string;
+  label: ReactNode;
   value: string | number;
   onChange: (val: string) => void;
   name: string;
   step?: number
-}> = ({label, value, onChange, name, step}) => {
+  required?: boolean
+}> = ({label, value, onChange, name, step, required = false}) => {
   const type = typeof value === 'string' ? 'string' : 'number'
   return (
     <label className='Input' htmlFor={name}>
@@ -21,7 +22,7 @@ export const Input: React.FC<{
           onChange={e => onChange(e.target.value)}
           step={step}
         />
-        <div className="Input__dot" />
+        {required && <div className="Input__dot" />}
       </div>
     </label>
   )
