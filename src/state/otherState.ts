@@ -1,3 +1,4 @@
+import { SingleValue } from "react-select";
 import { atom, atomFamily } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
@@ -18,4 +19,19 @@ export const collapsedAtom = atomFamily({
 export const widthAtom = atom({
   key: 'widthAtom',
   default: 0,
+})
+
+export const currencyAtom = atom({
+  key: 'currencyAtom',
+  default: 'USD',
+})
+
+export const exchangeAtom = atom<SingleValue<{name: string, unit: string, value: number, type: string}>>({
+  key: 'exchangeAtom',
+  default: {
+    name: "US Dollar",
+    unit: "$",
+    value: 37586.84,
+    type: "fiat"
+  },
 })

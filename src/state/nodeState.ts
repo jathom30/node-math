@@ -57,7 +57,7 @@ export const dailyNodeEarnings = selectorFamily({
   key: 'dailyNodeEarningsSelector',
   get: (config: {id: string, taxType: 'compound' | 'withdraw'}) => ({ get }) => {
     const {id, taxType} = config
-    const marketPrice = get(tokenAtom(id))?.market_data.current_price.usd || 0
+    const marketPrice = get(tokenAtom(id))?.market_data.current_price.btc || 0
     const currentPrice = get(userSetPrice(id))
     const daily = get(nodeRewards(id))
     const nodecount = get(nodeCount(id))

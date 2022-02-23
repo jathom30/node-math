@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlexBox, Input, NodeTable, Button } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeSalesTax, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
+import { currencyAtom, dailyNodeEarnings, exchangeAtom, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeSalesTax, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
 
@@ -14,10 +14,12 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [compountTax, setCompoundTax] = useRecoilState(nodeCompoundTax(id))
   const [salesTax, setSalesTax] = useRecoilState(nodeSalesTax(id))
   const [fee, setFee] = useRecoilState(nodeFee(id))
+  const currency = useRecoilValue(currencyAtom)
+  const exchange = useRecoilValue(exchangeAtom)
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
 
   const token = useRecoilValue(tokenAtom(id))
-  const currentPrice = token?.market_data.current_price.usd
+  const currentPrice = token?.market_data.current_price.btc
   const customPrice = useRecoilValue(userSetPrice(id))
   // buy in price should first check if a custom price is used, then the current token market price
   const nodeBuyInPrice = nodecost * (customPrice ?? currentPrice ?? 0)
@@ -78,12 +80,12 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           />}
           {step > 1 && (
             <FlexBox flexDirection='column' gap="0.25rem">
-              <h3>Current node(s) purchase price (USD)</h3>
+              <h3>Current node(s) purchase price ({currency})</h3>
               <div className="NodeInputs__box">
-                <p><span>({nodecost} tokens per node)</span> {toCurrency(nodeBuyInPrice)}</p>
+                <p><span>({nodecost} tokens per node)</span> {toCurrency(nodeBuyInPrice * (exchange?.value || 1))}</p>
                 <p><span>(Number of nodes)</span> x {nodecount}</p>
                 <div className='NodeInputs__seperator' />
-                <p>{toCurrency(nodeBuyInPrice * nodecount)}</p>
+                <p>{toCurrency(nodeBuyInPrice * nodecount * (exchange?.value || 0))}</p>
               </div>
             </FlexBox>
           )}
@@ -121,7 +123,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
                 step={0.1}
               />
               <Input
-                label={`Node fee per month (USD)`}
+                label={`Node fee per month (${currency})`}
                 name="node-fee"
                 value={fee || 0}
                 onChange={(val) => setFee(parseFloat(val))}
@@ -132,12 +134,12 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 2 &&
           <>
           <FlexBox flexDirection='column' gap="0.25rem">
-            <h3>Earnings at current price after claim tax, sales tax, and node fee (USD)</h3>
+            <h3>Earnings at current price after claim tax, sales tax, and node fee ({currency})</h3>
             <div className="NodeInputs__box">
-              <p><span>(Daily)</span> {toCurrency(getEarnings(1))}</p>
-              <p><span>(Weekly)</span> {toCurrency(getEarnings(7))}</p>
-              <p><span>(30 day month)</span> {toCurrency(getEarnings(30))}</p>
-              <p><span>(Yearly)</span> {toCurrency(getEarnings(365))}</p>
+              <p><span>(Daily)</span> {toCurrency(getEarnings(1) * (exchange?.value || 1))}</p>
+              <p><span>(Weekly)</span> {toCurrency(getEarnings(7) * (exchange?.value || 1))}</p>
+              <p><span>(30 day month)</span> {toCurrency(getEarnings(30) * (exchange?.value || 1))}</p>
+              <p><span>(Yearly)</span> {toCurrency(getEarnings(365) * (exchange?.value || 1))}</p>
             </div>
             {/* <EarningsPieChart data={priceData} /> */}
           </FlexBox>

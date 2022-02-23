@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom, currencyAtom, exchangeAtom } from 'state';
 import './NodeTable.scss'
 
 const earningsPeriods = [
@@ -30,6 +30,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
   const nodecost = useRecoilValue(nodeCost(id))
   const dailyReward = useRecoilValue(nodeRewards(id))
   const token = useRecoilValue(tokenAtom(id))
+  const currency = useRecoilValue(currencyAtom)
 
   const data = createCompoundData(nodecost, dailyReward, nodecount)
 
@@ -55,7 +56,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
                     </button>
                   ))}
                 </FlexBox>
-                <span>Earnings (USD)</span>
+                <span>Earnings ({currency})</span>
               </div>
             </GridBox>
           </FlexBox>
@@ -71,10 +72,12 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
 const TableRow: React.FC<{row: CompoundData, id: string, earningsPeriod: number}> = ({row, id, earningsPeriod}) => {
   const nodecount = useRecoilValue(nodeCount(id))
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'compound'}))
+  const exchange = useRecoilValue(exchangeAtom)
+
 
   const getDailyEarnings = (numberOfNodes: number) => {
     const daily = dailyEarnings * numberOfNodes / nodecount
-    return toCurrency(daily * earningsPeriod)
+    return toCurrency(daily * earningsPeriod * (exchange?.value || 1))
   }
   return (
     <div className="NodeTable__row">

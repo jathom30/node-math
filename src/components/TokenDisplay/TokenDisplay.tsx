@@ -5,17 +5,20 @@ import { LabelInput, Modal, TokenSearch, FlexBox, Button } from 'components';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { SingleValue } from 'react-select';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice } from 'state';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice, exchangeAtom } from 'state';
 import { TokenSearchResult } from 'types';
 import ReactGA from 'react-ga'
 import './TokenDisplay.scss'
+import { getExchangedAmount, toCurrency } from 'helpers';
 
 export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id, isCollapsed = false}) => {
   const [showSearch, setShowSearch] = useState(false)
   const setToken = useSetRecoilState(tokenAtom(id))
   const [price, setPrice] = useRecoilState(userSetPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
+  const exchange = useRecoilValue(exchangeAtom)
+  // const currency = useRecoilValue(currencyAtom)
   const tokenQuery = useQuery(
     [TOKEN_QUERY, tokenId, id],
     () => tokenId ? getToken(tokenId) : undefined,
@@ -30,10 +33,10 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
 
   const token = tokenQuery.data?.data
 
-  const currentPrice = token?.market_data.current_price.usd ?? 0
+  const currentPrice = getExchangedAmount(token?.market_data.current_price.btc || 0, exchange?.value || 0)
 
-  const low24 = token?.market_data.low_24h.usd ?? 0
-  const high24 = token?.market_data.high_24h.usd ?? 0
+  const low24 = getExchangedAmount(token?.market_data.low_24h.btc || 0, exchange?.value || 0)
+  const high24 = getExchangedAmount(token?.market_data.high_24h.btc || 0, exchange?.value || 0)
 
   const dayDiff = high24 - low24
   const currentDiff = currentPrice - low24
@@ -94,7 +97,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
               {tokenQuery.isFetching ? (
                 <h2 className="TokenDisplay__loading"><FontAwesomeIcon icon={faSpinner} /></h2>
               ) : (
-                <h2>${price || currentPrice} <span>USD</span></h2>
+                <h2>{exchange?.unit} {toCurrency(price || currentPrice)} <span>{exchange?.name}</span></h2>
               )}
               <Button kind="secondary" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
             </FlexBox>
@@ -103,8 +106,8 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
             <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
           </div>
           <FlexBox justifyContent="space-between">
-            <span className='TokenDisplay__minmax-price'>${token?.market_data.low_24h.usd || 0}</span>
-            <span className='TokenDisplay__minmax-price'>${token?.market_data.high_24h.usd || 0}</span>
+            <span className='TokenDisplay__minmax-price'>{exchange?.unit}{toCurrency(low24)}</span>
+            <span className='TokenDisplay__minmax-price'>{exchange?.unit}{toCurrency(high24)}</span>
           </FlexBox>
         </FlexBox>
         {showSearch && (
@@ -139,9 +142,9 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
           <h1 className='TokenDisplay__loading'><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
           <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
-            <LabelInput value={price || currentPrice} onSubmit={handleSetPrice}>
+            <LabelInput value={toCurrency(price || currentPrice)} onSubmit={handleSetPrice}>
               <FlexBox padding='.125rem' alignItems="center" gap="1rem">
-                  <h1>${price || currentPrice} <span>USD</span></h1>
+                  <h1>{exchange?.unit} {toCurrency(price || currentPrice)} <span>{exchange?.name}</span></h1>
                   <FontAwesomeIcon icon={faEdit} />
               </FlexBox>
             </LabelInput>
@@ -157,8 +160,8 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
               <div className="TokenDisplay__filled-bar" style={{width: `${percDiff}%`}} />
             </div>
             <FlexBox justifyContent="space-between">
-              <span className='TokenDisplay__minmax-price'>${token?.market_data.low_24h.usd || 0}</span>
-              <span className='TokenDisplay__minmax-price'>${token?.market_data.high_24h.usd || 0}</span>
+              <span className='TokenDisplay__minmax-price'>{exchange?.unit} {toCurrency(low24)}</span>
+              <span className='TokenDisplay__minmax-price'>{exchange?.unit} {toCurrency(high24)}</span>
             </FlexBox>
           </>
         )}
