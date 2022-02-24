@@ -22,7 +22,7 @@ export const NodeContainer: React.FC<{
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const {onCopyNode, cloneId} = useNodes(id)
   const [showSettings, setShowSettings] = useState(false)
-  const setExchange = useSetRecoilState(exchangeAtom)
+  const [exchange, setExchange] = useRecoilState(exchangeAtom)
 
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setTokenId(token?.id)
@@ -73,6 +73,7 @@ export const NodeContainer: React.FC<{
             <span>Select Currency</span>
             <Select
               name="exchange-rate"
+              defaultValue={exchange}
               options={options}
               getOptionLabel={(option) => option.name}
               getOptionValue={(option) => option.name}
