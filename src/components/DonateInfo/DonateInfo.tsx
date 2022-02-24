@@ -3,7 +3,7 @@ import { faCopy, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, FlexBox } from 'components';
 import { copyFallback } from 'helpers';
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import './DonateInfo.scss'
 
 const btcWallet = '32fm2iAivoqLrMLPdjpy1z1XYKpZHq2y5D'
