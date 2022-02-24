@@ -8,7 +8,7 @@ import { SingleValue } from 'react-select';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { TOKEN_QUERY, tokenAtom, tokenIdAtom, userSetPrice, exchangeAtom } from 'state';
 import { TokenSearchResult } from 'types';
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 import './TokenDisplay.scss'
 import { getExchangedAmount, toCurrency } from 'helpers';
 

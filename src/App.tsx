@@ -8,16 +8,30 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { useRecoilState } from 'recoil';
 import { nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
-import ReactGA from 'react-ga'
+import ReactGA from 'react-ga4'
 
 const GA3 = 'UA-120851599-3'
+const GA4 = 'G-9TH8P17LPC'
 
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
   const [width, setWidth] = useRecoilState(widthAtom)
   
   useEffect(() => {
-    ReactGA.initialize(GA3)
+    ReactGA.initialize([
+      {
+        trackingId: GA3,
+        gaOptions: {
+          name: 'GA3',
+        },
+      },
+      {
+        trackingId: GA4,
+        gaOptions: {
+          name: 'GA4',
+        },
+      },
+    ])
   }, [])
 
   useEffect(() => {
