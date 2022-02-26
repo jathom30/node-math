@@ -1,5 +1,5 @@
 import { SingleValue } from "react-select";
-import { atom, atomFamily } from "recoil";
+import { atom, atomFamily, selectorFamily } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist()

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FlexBox, GridBox } from 'components';
 import { CompoundData, createCompoundData, toCurrency } from 'helpers';
 import { useRecoilValue } from 'recoil';
-import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom, currencyAtom, exchangeAtom } from 'state';
+import { nodeCost, nodeRewards, dailyNodeEarnings, nodeCount, tokenAtom, exchangeAtom, tokenRewardAtom } from 'state';
 import './NodeTable.scss'
 
 const earningsPeriods = [
@@ -29,8 +29,9 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
   const nodecount = useRecoilValue(nodeCount(id))
   const nodecost = useRecoilValue(nodeCost(id))
   const dailyReward = useRecoilValue(nodeRewards(id))
+  const tokenReward = useRecoilValue(tokenRewardAtom(id))
   const token = useRecoilValue(tokenAtom(id))
-  const currency = useRecoilValue(currencyAtom)
+  const exchange = useRecoilValue(exchangeAtom)
 
   const data = createCompoundData(nodecost, dailyReward, nodecount)
 
@@ -43,7 +44,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
             <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem" alignItems="flex-end" paddingTop="0.25rem">
               <span>Nodes</span>
               <span>Days to compound</span>
-              <span>{token?.symbol.toUpperCase()}/day</span>
+              <span>{tokenReward ? token?.symbol.toUpperCase() : '%'}/day</span>
               <div>
                 <FlexBox>
                   {earningsPeriods.map((period) => (
@@ -56,7 +57,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
                     </button>
                   ))}
                 </FlexBox>
-                <span>Earnings ({currency})</span>
+                <span>Earnings ({exchange?.name})</span>
               </div>
             </GridBox>
           </FlexBox>
@@ -72,6 +73,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
 const TableRow: React.FC<{row: CompoundData, id: string, earningsPeriod: number}> = ({row, id, earningsPeriod}) => {
   const nodecount = useRecoilValue(nodeCount(id))
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'compound'}))
+  const tokenReward = useRecoilValue(tokenRewardAtom(id))
   const exchange = useRecoilValue(exchangeAtom)
 
 
@@ -84,8 +86,8 @@ const TableRow: React.FC<{row: CompoundData, id: string, earningsPeriod: number}
       <GridBox gridTemplateColumns={`repeat(4, 1fr)`} gap="0.5rem">
         <span>{row.nodeCount}</span>
         <span>{Math.round(row.day).toLocaleString()}</span>
-        <span>{Math.round((row.rewards + Number.EPSILON) * 1000) / 1000}</span>
-        <span>{getDailyEarnings(row.nodeCount)}</span>
+        <span>{Math.round((row.rewards + Number.EPSILON) * 1000) / 1000}{!tokenReward && '%'}</span>
+        <span style={{whiteSpace: 'nowrap'}}>{exchange?.unit} {getDailyEarnings(row.nodeCount)}</span>
       </GridBox>
     </div>
   )

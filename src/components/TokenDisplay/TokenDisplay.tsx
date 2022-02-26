@@ -18,7 +18,6 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
   const [price, setPrice] = useRecoilState(userSetPrice(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const exchange = useRecoilValue(exchangeAtom)
-  // const currency = useRecoilValue(currencyAtom)
   const tokenQuery = useQuery(
     [TOKEN_QUERY, tokenId, id],
     () => tokenId ? getToken(tokenId) : undefined,
@@ -67,6 +66,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
   }
 
   const notCurrentPrice = price && price !== currentPrice
+  const currentPriceFormatted = notCurrentPrice ? toCurrency(price) : toCurrency(currentPrice)
 
   const handleResetPrice = () => {
     ReactGA.event({
@@ -97,7 +97,7 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
               {tokenQuery.isFetching ? (
                 <h2 className="TokenDisplay__loading"><FontAwesomeIcon icon={faSpinner} /></h2>
               ) : (
-                <h2>{exchange?.unit} {toCurrency(price || currentPrice)} <span>{exchange?.name}</span></h2>
+                <h2>{exchange?.unit} {currentPriceFormatted} <span>{exchange?.name}</span></h2>
               )}
               <Button kind="secondary" isRounded onClick={handleResetPrice}><FontAwesomeIcon icon={faSync} /></Button>
             </FlexBox>
@@ -142,9 +142,9 @@ export const TokenDisplay: React.FC<{id: string, isCollapsed?: boolean}> = ({id,
           <h1 className='TokenDisplay__loading'><FontAwesomeIcon icon={faSpinner} /></h1>
         ) : (
           <FlexBox gap="1rem" alignItems="center" padding='.25rem 0'>
-            <LabelInput value={toCurrency(price || currentPrice)} onSubmit={handleSetPrice}>
+            <LabelInput value={currentPriceFormatted} onSubmit={handleSetPrice}>
               <FlexBox padding='.125rem' alignItems="center" gap="1rem">
-                  <h1>{exchange?.unit} {toCurrency(price || currentPrice)} <span>{exchange?.name}</span></h1>
+                  <h1>{exchange?.unit} {currentPriceFormatted} <span>{exchange?.name}</span></h1>
                   <FontAwesomeIcon icon={faEdit} />
               </FlexBox>
             </LabelInput>
