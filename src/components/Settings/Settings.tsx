@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import Select from 'react-select';
 import { useRecoilState } from 'recoil';
 import { exchangeAtom } from 'state';
+import ReactGA from 'react-ga4'
 import './Settings.scss'
 
 export const Settings = () => {
@@ -29,7 +30,14 @@ export const Settings = () => {
                 options={options}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.name}
-                onChange={(newExchange) => setExchange(newExchange)}
+                onChange={(newExchange) => {
+                  ReactGA.event({
+                    category: 'Exchange',
+                    action: 'Select',
+                    label: newExchange?.name || '',
+                  })
+                  setExchange(newExchange)
+                }}
               />
             </FlexBox>
           </div>
