@@ -53,8 +53,10 @@ function App() {
     getExchangeRates,
     {
       onSuccess: (data) => {
-        const newExchange = Object.values(data.data.rates).find((rate) => rate.name === exchange?.name)
-        newExchange && setExchange(newExchange)
+        const newExchange =
+          Object.values(data.data.rates).find((rate) => rate.name === exchange?.name) ??
+          data.data.rates.usd
+        setExchange(newExchange)
       }
     },
   )
