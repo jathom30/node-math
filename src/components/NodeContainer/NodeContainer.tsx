@@ -19,7 +19,6 @@ export const NodeContainer: React.FC<{
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const {onCopyNode, cloneId} = useNodes(id)
   
-
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setTokenId(token?.id)
   }

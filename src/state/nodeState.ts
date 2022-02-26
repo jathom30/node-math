@@ -55,9 +55,9 @@ export const nodeSalesTax = atomFamily({
   effects: [persistAtom]
 })
 
-export const nodeFee = atomFamily<number | undefined, string>({
+export const nodeFee = atomFamily({
   key: 'nodeFee',
-  default: undefined,
+  default: 0,
   effects: [persistAtom]
 })
 

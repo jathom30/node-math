@@ -151,7 +151,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
               <Input
                 label={`Node fee per month (${exchange?.name})`}
                 name="node-fee"
-                value={fee || 0}
+                value={fee}
                 onChange={(val) => setFee(parseFloat(val))}
                 step={0.1}
               />

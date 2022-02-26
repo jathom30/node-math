@@ -53,6 +53,7 @@ function App() {
     getExchangeRates,
     {
       onSuccess: (data) => {
+        // onSuccess update exchange in state, if no state is available, default to usd
         const newExchange =
           Object.values(data.data.rates).find((rate) => rate.name === exchange?.name) ??
           data.data.rates.usd
