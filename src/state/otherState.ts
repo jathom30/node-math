@@ -21,11 +21,6 @@ export const widthAtom = atom({
   default: 0,
 })
 
-export const currencyAtom = atom({
-  key: 'currencyAtom',
-  default: 'USD',
-})
-
 export const exchangeAtom = atom<SingleValue<{name: string, unit: string, value: number, type: string}>>({
   key: 'exchangeAtom',
   default: {
@@ -34,4 +29,5 @@ export const exchangeAtom = atom<SingleValue<{name: string, unit: string, value:
     value: 37586.84,
     type: "fiat"
   },
+  effects: [persistAtom]
 })

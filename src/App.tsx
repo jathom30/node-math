@@ -6,9 +6,11 @@ import { faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
 import { v4 as uuid }from 'uuid'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { useRecoilState } from 'recoil';
-import { nodeIdsAtom, widthAtom } from 'state';
+import { exchangeAtom, nodeIdsAtom, widthAtom } from 'state';
 import { reorder } from 'helpers';
 import ReactGA from 'react-ga4'
+import { useQuery } from 'react-query';
+import { getExchangeRates } from 'api';
 
 const GA3 = 'UA-120851599-3'
 const GA4 = 'G-9TH8P17LPC'
@@ -16,6 +18,7 @@ const GA4 = 'G-9TH8P17LPC'
 function App() {
   const [nodeIds, setNodeIds] = useRecoilState(nodeIdsAtom)
   const [width, setWidth] = useRecoilState(widthAtom)
+  const [exchange, setExchange] = useRecoilState(exchangeAtom)
   
   useEffect(() => {
     ReactGA.initialize([
@@ -44,6 +47,17 @@ function App() {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [setWidth])
+
+  useQuery(
+    'exchange-rates',
+    getExchangeRates,
+    {
+      onSuccess: (data) => {
+        const newExchange = Object.values(data.data.rates).find((rate) => rate.name === exchange?.name)
+        newExchange && setExchange(newExchange)
+      }
+    },
+  )
 
   const handleNewNode = () => {
     ReactGA.event({
