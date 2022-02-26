@@ -33,7 +33,7 @@ export const NodeTable: React.FC<{id: string}> = ({id}) => {
   const token = useRecoilValue(tokenAtom(id))
   const exchange = useRecoilValue(exchangeAtom)
 
-  const data = createCompoundData(nodecost, dailyReward, nodecount)
+  const data = createCompoundData(nodecost, dailyReward, nodecount, tokenReward)
 
   return (
     <div className="NodeTable">
