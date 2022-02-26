@@ -67,9 +67,9 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const handleRewardTypeChange = () => {
     // if switching to percent based reward
     if (tokenReward) {
-      setDaily(daily * visiblePrice * (exchange?.value || 1))
+      setDaily(daily * 100)
     } else {
-      setDaily(daily / visiblePrice / (exchange?.value || 1))
+      setDaily(daily / 100)
     }
     setTokenReward(!tokenReward)
   }
