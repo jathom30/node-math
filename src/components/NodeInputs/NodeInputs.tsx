@@ -1,12 +1,15 @@
 import React from 'react';
 import { FlexBox, Input, NodeTable, Button } from 'components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeSalesTax, nodeWithdrawTax, stepAtom, tokenAtom, userSetPrice } from 'state';
+import { dailyNodeEarnings, exchangeAtom, nodeCompoundTax, nodeCost, nodeCount, nodeFee, nodeRewards, nodeSalesTax, nodeWithdrawTax, stepAtom, tokenAtom, tokenRewardAtom, userSetPrice } from 'state';
 import { toCurrency } from 'helpers';
 import './NodeInputs.scss'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoins, faPercent } from '@fortawesome/free-solid-svg-icons';
 
 export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [step, setStep] = useRecoilState(stepAtom(id))
+  const [tokenReward, setTokenReward] = useRecoilState(tokenRewardAtom(id))
   const [nodecount, setNodecount] = useRecoilState(nodeCount(id))
   const [nodecost, setNodecost] = useRecoilState(nodeCost(id))
   const [daily, setDaily] = useRecoilState(nodeRewards(id))
@@ -14,13 +17,16 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   const [compountTax, setCompoundTax] = useRecoilState(nodeCompoundTax(id))
   const [salesTax, setSalesTax] = useRecoilState(nodeSalesTax(id))
   const [fee, setFee] = useRecoilState(nodeFee(id))
+  const exchange = useRecoilValue(exchangeAtom)
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
 
   const token = useRecoilValue(tokenAtom(id))
-  const currentPrice = token?.market_data.current_price.usd
+  const currentPrice = token?.market_data.current_price.btc
   const customPrice = useRecoilValue(userSetPrice(id))
+  const customPriceInBTC = (customPrice || 1) / (exchange?.value || 1)
   // buy in price should first check if a custom price is used, then the current token market price
-  const nodeBuyInPrice = nodecost * (customPrice ?? currentPrice ?? 0)
+  const visiblePrice = customPrice ? customPriceInBTC : currentPrice ? currentPrice : 0
+  const nodeBuyInPrice = nodecost * visiblePrice
 
   const isEnabled = () => {
     switch (step) {
@@ -58,6 +64,18 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
   //   },
   // ]
 
+  const handleRewardTypeChange = () => {
+    // if switching to percent based reward
+    if (tokenReward) {
+      setDaily(daily * 100)
+    } else {
+      setDaily(daily / 100)
+    }
+    setTokenReward(!tokenReward)
+  }
+
+  const daysToROI = Math.ceil(nodecost / (tokenReward ? daily : (daily / 100)))
+
   return (
     <div className="NodeInputs">
       <FlexBox flexDirection='column' gap="1rem">
@@ -78,12 +96,12 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           />}
           {step > 1 && (
             <FlexBox flexDirection='column' gap="0.25rem">
-              <h3>Current node(s) purchase price (USD)</h3>
+              <h3>Current node(s) purchase price</h3>
               <div className="NodeInputs__box">
-                <p><span>({nodecost} tokens per node)</span> {toCurrency(nodeBuyInPrice)}</p>
+                <p><span>({nodecost} tokens per node)</span> {exchange?.unit} {toCurrency(nodeBuyInPrice * (exchange?.value || 1))}</p>
                 <p><span>(Number of nodes)</span> x {nodecount}</p>
                 <div className='NodeInputs__seperator' />
-                <p>{toCurrency(nodeBuyInPrice * nodecount)}</p>
+                <p>{exchange?.unit} {toCurrency(nodeBuyInPrice * nodecount * (exchange?.value || 0))}</p>
               </div>
             </FlexBox>
           )}
@@ -92,7 +110,17 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 1 && (
             <>
               <Input
-                label={`[Required] Daily node rewards (${token?.symbol.toUpperCase()})`}
+                label={
+                  <FlexBox alignItems='flex-end' justifyContent='space-between'>
+                    <span>[Required] Daily node rewards ({tokenReward ? token?.symbol.toUpperCase() : '%'})</span>
+                    <Button kind="secondary" isRounded onClick={handleRewardTypeChange}>
+                      <FlexBox gap="0.25rem" alignItems='center'>
+                        <span>Switch to</span>
+                        <FontAwesomeIcon icon={tokenReward ? faPercent : faCoins} />
+                      </FlexBox>
+                    </Button>
+                  </FlexBox>
+                }
                 name="daily"
                 value={daily}
                 onChange={(val) => setDaily(parseFloat(val))}
@@ -121,9 +149,9 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
                 step={0.1}
               />
               <Input
-                label={`Node fee per month (USD)`}
+                label={`Node fee per month (${exchange?.name})`}
                 name="node-fee"
-                value={fee || 0}
+                value={fee}
                 onChange={(val) => setFee(parseFloat(val))}
                 step={0.1}
               />
@@ -132,18 +160,18 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
           {step > 2 &&
           <>
           <FlexBox flexDirection='column' gap="0.25rem">
-            <h3>Earnings at current price after claim tax, sales tax, and node fee (USD)</h3>
+            <h3>Earnings at current price after claim tax, sales tax, and node fee</h3>
             <div className="NodeInputs__box">
-              <p><span>(Daily)</span> {toCurrency(getEarnings(1))}</p>
-              <p><span>(Weekly)</span> {toCurrency(getEarnings(7))}</p>
-              <p><span>(30 day month)</span> {toCurrency(getEarnings(30))}</p>
-              <p><span>(Yearly)</span> {toCurrency(getEarnings(365))}</p>
+              <p><span>(Daily)</span> {exchange?.unit} {toCurrency(getEarnings(1) * (exchange?.value || 1))}</p>
+              <p><span>(Weekly)</span> {exchange?.unit} {toCurrency(getEarnings(7) * (exchange?.value || 1))}</p>
+              <p><span>(30 day month)</span> {exchange?.unit} {toCurrency(getEarnings(30) * (exchange?.value || 1))}</p>
+              <p><span>(Yearly)</span> {exchange?.unit} {toCurrency(getEarnings(365) * (exchange?.value || 1))}</p>
             </div>
             {/* <EarningsPieChart data={priceData} /> */}
           </FlexBox>
           <FlexBox flexDirection='column' gap="0.25rem">
             <h3>Number of days to ROI/compound (rounded up)</h3>
-            <p className='NodeInputs__box'>{Math.ceil(nodecost / daily).toLocaleString()}</p>
+            <p className='NodeInputs__box'>{daysToROI.toLocaleString()}</p>
           </FlexBox>
           </>
           }

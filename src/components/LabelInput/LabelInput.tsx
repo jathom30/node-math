@@ -26,6 +26,11 @@ export const LabelInput: React.FC<LabelInputType> = ({
   const displayRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // if input changes externally after render
+  useEffect(() => {
+    setInput(value)
+  }, [value])
+
   // set display height so page doesn't adjust if input height is smaller than the display height
   useEffect(() => {
     setDisplayHeight(displayRef.current?.clientHeight);

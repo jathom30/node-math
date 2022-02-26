@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { faDonate, faEnvelope, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, FlexBox, Modal, DonateInfo } from 'components';
+import { Button, FlexBox, Modal, DonateInfo, Settings } from 'components';
 import { useRecoilValue } from 'recoil';
 import { widthAtom } from 'state';
 import ReactGA from 'react-ga4'
@@ -27,7 +27,10 @@ export const Header = ({onClick}: {onClick: () => void}) => {
   return (
     <div className="Header">
       <FlexBox justifyContent="space-between" alignItems="center">
-        <span>Crypto Node Calculator</span>
+        <FlexBox alignItems="center" gap="0.5rem">
+          <Settings />
+          <span>Crypto Node Calculator</span>
+        </FlexBox>
         <FlexBox gap=".5rem">
           <Button isRounded kind="secondary" onClick={handleShowDonateModal}>
             <FlexBox gap=".5rem" alignItems="center" padding='0 .5rem'>

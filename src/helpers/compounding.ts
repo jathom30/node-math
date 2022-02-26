@@ -4,11 +4,11 @@ export type CompoundData = {
   rewards: number;
 }
 
-export const createCompoundData = (tokensPerNode: number, dailyReward: number, startingNodeCount: number) => {
+export const createCompoundData = (tokensPerNode: number, dailyReward: number, startingNodeCount: number, tokenReward?: boolean) => {
   const totalNodes = 100
   const nodes = Array.from({length: totalNodes}, (_, i) => i + 1).splice(startingNodeCount - 1, totalNodes)
   const getDay = (prevDayCount: number, reward: number) => {
-    return tokensPerNode / reward + prevDayCount
+    return tokensPerNode / (tokenReward ? reward : reward / 100) + prevDayCount
   }
   const mappedNodes = nodes.reduce((acc: CompoundData[], nodeCount, index) => {
     const firstDay = {day: 0, nodes: 1, rewards: dailyReward}

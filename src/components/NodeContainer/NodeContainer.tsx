@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, CollapsibleCard, FlexBox, NodeInputs, TokenDisplay, TokenSearch, Button } from 'components';
+import { Box, CollapsibleCard, FlexBox, NodeInputs, TokenDisplay, TokenSearch, Button, Modal } from 'components';
 import { useRecoilState } from 'recoil';
 import { collapsedAtom, tokenIdAtom } from 'state';
 import { SingleValue } from 'react-select';
@@ -18,7 +18,7 @@ export const NodeContainer: React.FC<{
   const [isCollapsed, setIsCollapsed] = useRecoilState(collapsedAtom(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const {onCopyNode, cloneId} = useNodes(id)
-
+  
   const handleSelectToken = (token: SingleValue<TokenSearchResult>) => {
     setTokenId(token?.id)
   }
