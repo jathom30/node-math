@@ -19,6 +19,10 @@ Current build status:
 
 ## Features:
 
+### General:
+
+- State is saved to local storage so user sessions are preserved between visits (when using the same browser)
+
 ### Card Features:
 
 - Create new
