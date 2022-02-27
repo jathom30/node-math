@@ -14,3 +14,37 @@ To contribute, open a PR
 
 Current build status:
 [![Netlify Status](https://api.netlify.com/api/v1/badges/911fa035-a30f-4df6-8dc2-0683b6704dfc/deploy-status)](https://app.netlify.com/sites/relaxed-pike-d1bcb0/deploys)
+
+---
+
+## Features:
+
+### Card Features:
+
+- Create new
+- Delete
+- Clone
+- Drag and drop (reorder)
+
+### Token Features
+
+- Search token
+- Select token
+- Refetch/update current price
+- Create custom token price
+
+### Form Features
+
+- Required Fields: Node count, Node cost, and Daily rewards (% or token based)
+- Optional Fields: Claim tax, Sales tax, Sales tax, Compound tax, Node fee per month
+
+### Compound Table
+
+- Display days or date (from today) to compound
+- See daily, weekly, monthly, or yearly earnings
+
+### Advanced
+
+- Set currency for entire app
+- Email support
+- Donate crypto to help support our efforts
