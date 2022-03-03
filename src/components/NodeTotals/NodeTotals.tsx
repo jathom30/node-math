@@ -12,9 +12,8 @@ export const NodeTotals = () => {
     <div className="NodeTotals">
       <FlexBox flexDirection='column' gap="0.5rem">
         <h4>Totals</h4>
-        <span>Node count</span>
-        <span>Daily/weekly/monthly/yearly selection</span>
-        <span>Nodes in total</span>
+        <span>Node summary info</span>
+        <span>number of nodes, total in different time increments</span>
         <span>{toCurrency(dailyTotal * (exchange?.value || 1))}</span>
       </FlexBox>
     </div>

@@ -1,7 +1,7 @@
 import { SingleValue } from "react-select";
 import { atom, atomFamily, selector } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { dailyNodeEarnings, nodeIdsAtom } from "./nodeState";
+import { dailyNodeEarnings, nodeCount, nodeIdsAtom } from "./nodeState";
 
 const { persistAtom } = recoilPersist()
 
@@ -42,7 +42,7 @@ export const totalsSelector = selector({
       const include = get(includeInTotalAtom(id))
       if (!include) return total
       const dailyEarning = get(dailyNodeEarnings({id, taxType: 'withdraw'}))
-      return total += dailyEarning
+      return total += dailyEarning 
     }, 0)
     return total
   }
