@@ -1,0 +1,24 @@
+.HideAway {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  &__show-btn {
+    border: 1px solid lightgrey;
+    border-bottom: none;
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 0.5rem 2rem;
+    background: white;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-right: 1rem;
+  }
+  &__content {
+    background: white;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    padding: 1rem;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
+  }
+}
