@@ -8,25 +8,28 @@ export const HideAway: React.FC<{label: string}> = ({ children, label }) => {
   const [showChildren, setShowChildren] = useState(false)
 
   return (
-    <div className="HideAway">
-      <FlexBox flexDirection='column'>
-        <button
-          onClick={() => setShowChildren(!showChildren)}
-          className="HideAway__show-btn"
-        >
-          <FlexBox alignItems="center" gap="0.5rem">
-            <span>{showChildren ? 'hide' : 'show'} {label}</span>
-            <FontAwesomeIcon icon={showChildren ? faChevronDown : faChevronUp} />
-          </FlexBox>
-        </button>
-        {showChildren && (
-          <div
-            className="HideAway__content"
+    <>
+      {showChildren && <div className="HideAway__backdrop" role="presentation" onClick={() => setShowChildren(false)} />}
+      <div className="HideAway">
+        <FlexBox flexDirection='column'>
+          <button
+            onClick={() => setShowChildren(!showChildren)}
+            className="HideAway__show-btn"
           >
-            {children}
-          </div>
-        )}
-      </FlexBox>
-    </div>
+            <FlexBox alignItems="center" gap="0.5rem">
+              <span>{showChildren ? 'Hide' : 'Show'} {label}</span>
+              <FontAwesomeIcon icon={showChildren ? faChevronDown : faChevronUp} />
+            </FlexBox>
+          </button>
+          {showChildren && (
+            <div
+              className="HideAway__content"
+            >
+              {children}
+            </div>
+          )}
+        </FlexBox>
+      </div>
+    </>
   )
 }

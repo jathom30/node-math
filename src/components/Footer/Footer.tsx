@@ -21,7 +21,7 @@ export const Footer = ({isMobile}: {isMobile: boolean}) => {
         </FlexBox>
       </a>
 
-      <HideAway label="Total panel">
+      <HideAway label="total panel">
         <NodeTotals />
       </HideAway>
     </div>
