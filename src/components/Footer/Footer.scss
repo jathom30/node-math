@@ -7,7 +7,7 @@
   justify-content: space-between;
   gap: 1rem;
   background: white;
-  span {
+  &__text {
     font-size: 0.5rem;
     text-transform: uppercase;
   }
@@ -26,8 +26,9 @@
       text-decoration: underline;
     }
   }
-  svg {
-    height: 2.5rem;
-    width: auto;
-  }
+}
+
+.YoutubeLogo {
+  height: 2.5rem;
+  width: auto;
 }
