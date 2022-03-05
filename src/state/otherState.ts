@@ -34,13 +34,25 @@ export const includeInTotalAtom = atomFamily({
   effects: [persistAtom],
 })
 
+export const includedIdsSelector = selector({
+  key: 'includedIdsSelector',
+  get: ({ get }) => {
+    const ids = get(nodeIdsAtom)
+    return ids.reduce((includedIds: string[], id) => {
+      const included = get(includeInTotalAtom(id))
+      if (included) {
+        return [...includedIds, id]
+      }
+      return includedIds
+    }, [])
+  }
+})
+
 export const totalsSelector = selector({
   key: 'totalsSelector',
   get: ({ get }) => {
-    const ids = get(nodeIdsAtom)
+    const ids = get(includedIdsSelector)
     const total = ids.reduce((total, id) => {
-      const include = get(includeInTotalAtom(id))
-      if (!include) return total
       const dailyEarning = get(dailyNodeEarnings({id, taxType: 'withdraw'}))
       return total += dailyEarning 
     }, 0)

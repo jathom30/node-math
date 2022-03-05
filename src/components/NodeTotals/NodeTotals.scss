@@ -25,6 +25,14 @@
     font-size: 1.75rem;
     line-height: 1.5rem;
   }
+  &__message {
+    text-align: center;
+    &--sub {
+      font-weight: bold;
+      color: grey;
+      font-size: 0.75rem;
+    }
+  }
 }
 
 .NodeItem {

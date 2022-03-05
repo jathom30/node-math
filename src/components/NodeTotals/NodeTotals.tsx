@@ -1,8 +1,8 @@
 import { FlexBox, GridBox } from 'components';
 import { toCurrency } from 'helpers';
 import React, { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { dailyNodeEarnings, exchangeAtom, includeInTotalAtom, nodeCount, nodeIdsAtom, tokenAtom, totalsSelector } from 'state';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { dailyNodeEarnings, exchangeAtom, includedIdsSelector, includeInTotalAtom, nodeCount, nodeIdsAtom, tokenAtom, totalsSelector } from 'state';
 import './NodeTotals.scss'
 
 const earningsPeriods = [
@@ -26,7 +26,7 @@ const earningsPeriods = [
 
 export const NodeTotals = () => {
   const [activeEarningsPeriod, setActiveEarningsPeriod] = useState(1)
-  const ids = useRecoilValue(nodeIdsAtom)
+  const ids = useRecoilValue(includedIdsSelector)
   const dailyTotal = useRecoilValue(totalsSelector)
   const exchange = useRecoilValue(exchangeAtom)
 
@@ -49,44 +49,53 @@ export const NodeTotals = () => {
       <FlexBox flexDirection='column' gap="1rem">
         <FlexBox justifyContent="space-between">
           <h5>Node Totals</h5>
-          <FlexBox>
-            {earningsPeriods.map((period) => (
-              <button
-                key={period.value}
-                onClick={() => setActiveEarningsPeriod(period.value)}
-                className={`NodeTable__earnings-btn ${activeEarningsPeriod === period.value ? 'NodeTable__earnings-btn--active' : ''}`}
-              >
-                {period.label}
-              </button>
-            ))}
+          {ids.length > 0 && (
+            <FlexBox>
+              {earningsPeriods.map((period) => (
+                <button
+                  key={period.value}
+                  onClick={() => setActiveEarningsPeriod(period.value)}
+                  className={`NodeTable__earnings-btn ${activeEarningsPeriod === period.value ? 'NodeTable__earnings-btn--active' : ''}`}
+                >
+                  {period.label}
+                </button>
+              ))}
+            </FlexBox>
+          )}
+        </FlexBox>
+        {ids.length > 0 ? (
+          <>
+            <FlexBox gap="0.5rem" flexDirection='column'>
+              <GridBox gridTemplateColumns="1fr 1fr 1fr">
+                <span className='NodeTotals__label NodeTotals__label--header'>Node</span>
+                <span className='NodeTotals__label NodeTotals__label--header'>Count</span>
+                <span className='NodeTotals__label NodeTotals__label--header'>Total</span>
+              </GridBox>
+              {ids.map((id) => <NodeItem id={id} period={activeEarningsPeriod} key={id} />)}
+            </FlexBox>
+            <div className="NodeTotals__hr" />
+            <FlexBox alignSelf="flex-end" alignItems="flex-end" gap="0.5rem">
+              <span className="NodeTotals__label">{earningsLabel()}</span>
+              <span className="NodeTotals__total">{`${exchange?.unit}${toCurrency(dailyTotal * (exchange?.value || 1) * activeEarningsPeriod)}`}</span>
+            </FlexBox>
+          </>
+        ) : (
+          <FlexBox flexDirection='column' alignItems="center">
+            <span className='NodeTotals__message'>Include at least one Node card above to see accumulated total.</span>
+            <span className='NodeTotals__message NodeTotals__message--sub'>To include a Node card in total, click the "Include in total" button in the top right of the card.</span>
           </FlexBox>
-        </FlexBox>
-        <FlexBox gap="0.5rem" flexDirection='column'>
-          <GridBox gridTemplateColumns="1fr 1fr 1fr">
-            <span className='NodeTotals__label NodeTotals__label--header'>Node</span>
-            <span className='NodeTotals__label NodeTotals__label--header'>Count</span>
-            <span className='NodeTotals__label NodeTotals__label--header'>Total</span>
-          </GridBox>
-          {ids.map((id) => <NodeItem id={id} period={activeEarningsPeriod} key={id} />)}
-        </FlexBox>
-        <div className="NodeTotals__hr" />
-        <FlexBox alignSelf="flex-end" alignItems="flex-end" gap="0.5rem">
-          <span className="NodeTotals__label">{earningsLabel()}</span>
-          <span className="NodeTotals__total">{`${exchange?.unit}${toCurrency(dailyTotal * (exchange?.value || 1) * activeEarningsPeriod)}`}</span>
-        </FlexBox>
+        )}
       </FlexBox>
     </div>
   )
 }
 
 const NodeItem = ({id, period} : {id: string; period: number}) => {
-  const [include, setInclude] = useRecoilState(includeInTotalAtom(id))
+  const setInclude = useSetRecoilState(includeInTotalAtom(id))
   const token = useRecoilValue(tokenAtom(id))
   const dailyEarnings = useRecoilValue(dailyNodeEarnings({id, taxType: 'withdraw'}))
   const exchange = useRecoilValue(exchangeAtom)
   const [count, setCount] = useRecoilState(nodeCount(id))
-
-  if (!include) return null
 
   const displayEarnings = toCurrency(dailyEarnings * (exchange?.value || 1) * period)
   return (
