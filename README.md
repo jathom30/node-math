@@ -22,6 +22,7 @@ Current build status:
 ### General:
 
 - State is saved to local storage so user sessions are preserved between visits (when using the same browser)
+- Total Panel: Accumulated total of all added nodes. Each node card can be added or removed from total panel to create a custom total.
 
 ### Card Features:
 
@@ -29,6 +30,7 @@ Current build status:
 - Delete
 - Clone
 - Drag and drop (reorder)
+- Add/remove from total card
 
 ### Token Features
 
