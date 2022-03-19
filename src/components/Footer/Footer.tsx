@@ -1,8 +1,7 @@
 import React from 'react';
-import { FlexBox, HideAway } from 'components';
+import { FlexBox } from 'components';
 import banner from 'assets/aj_thomas_site_logo.png'
 import './Footer.scss'
-import { NodeTotals } from 'components/NodeTotals';
 
 export const Footer = ({isMobile}: {isMobile: boolean}) => {
   return (
@@ -20,10 +19,6 @@ export const Footer = ({isMobile}: {isMobile: boolean}) => {
           )}
         </FlexBox>
       </a>
-
-      <HideAway label="total panel">
-        <NodeTotals />
-      </HideAway>
     </div>
   )
 }

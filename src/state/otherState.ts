@@ -59,3 +59,15 @@ export const totalsSelector = selector({
     return total
   }
 })
+
+export const totalNodeCount = selector({
+  key: 'totalNodeCount',
+  get: ({ get }) => {
+    const ids = get(includedIdsSelector)
+    const total = ids.reduce((total, id) => {
+      const count = get(nodeCount(id))
+      return total += count
+    }, 0)
+    return total
+  },
+})

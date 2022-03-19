@@ -5,4 +5,12 @@
   span {
     font-weight: bold;
   }
+  .mobile-text {
+    font-size: 3vw;
+  }
+  &__totals-modal {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
 }
