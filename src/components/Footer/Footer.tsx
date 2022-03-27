@@ -1,24 +1,42 @@
 import React from 'react';
 import { FlexBox } from 'components';
 import banner from 'assets/aj_thomas_site_logo.png'
+import desktopAd from 'assets/nodeWhale.png'
+import mobileAd from 'assets/nodeWhaleWide.png'
 import './Footer.scss'
+import { GridBox } from 'components/Box';
 
 export const Footer = ({isMobile}: {isMobile: boolean}) => {
   return (
     <div className="Footer">
-      <span className='Footer__text'><strong>These are not guaranteed rewards.</strong> Please do your own research and invest at your own risk. This is not financial advice.</span>
-      <a href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
-        <FlexBox alignItems="center">
-          {isMobile ? (
+      <FlexBox flexDirection='column' gap=".5rem">
+        <a className='Footer__ad-link' href="https://nodewhales.com/" target="_blank" rel="noreferrer">
+        {!isMobile ? (
             <>
-              <YoutubeLogo />
-              <span className='Footer__text'>AJ Thomas Crypto</span>
+              <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
+              <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
+              <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
             </>
-          ) : (
-            <img src={banner} alt="AJ Thomas Crypto Youtube" />
+        ) : (
+          <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
           )}
+          </a>
+        <FlexBox gap='1rem' alignItems="center" justifyContent="space-between">
+          <span className='Footer__text'><strong>These are not guaranteed rewards.</strong> Please do your own research and invest at your own risk. This is not financial advice.</span>
+          <a href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
+            <FlexBox alignItems="center">
+              {isMobile ? (
+                <>
+                  <YoutubeLogo />
+                  <span className='Footer__text'>AJ Thomas Crypto</span>
+                </>
+              ) : (
+                <img className='Footer__aj' src={banner} alt="AJ Thomas Crypto Youtube" />
+              )}
+            </FlexBox>
+          </a>
         </FlexBox>
-      </a>
+      </FlexBox>
     </div>
   )
 }
