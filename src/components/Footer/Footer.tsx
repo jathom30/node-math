@@ -3,10 +3,16 @@ import { FlexBox } from 'components';
 import banner from 'assets/aj_thomas_site_logo.png'
 import desktopAd from 'assets/nodeWhale.png'
 import mobileAd from 'assets/nodeWhaleWide.png'
+import ReactGA from 'react-ga4'
 import './Footer.scss'
-import { GridBox } from 'components/Box';
 
 export const Footer = ({isMobile}: {isMobile: boolean}) => {
+  const handleAdClick = () => {
+    ReactGA.event({
+      category: 'Ad',
+      action: 'Click',
+    })
+  }
   return (
     <div className="Footer">
       <FlexBox flexDirection='column' gap=".5rem">
@@ -23,7 +29,7 @@ export const Footer = ({isMobile}: {isMobile: boolean}) => {
           </a>
         <FlexBox gap='1rem' alignItems="center" justifyContent="space-between">
           <span className='Footer__text'><strong>These are not guaranteed rewards.</strong> Please do your own research and invest at your own risk. This is not financial advice.</span>
-          <a href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
+          <a onClick={handleAdClick} href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
             <FlexBox alignItems="center">
               {isMobile ? (
                 <>
