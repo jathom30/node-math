@@ -1,9 +1,8 @@
 import React from 'react';
 import { FlexBox } from 'components';
 import banner from 'assets/aj_thomas_site_logo.png'
-// import desktopAd from 'assets/nodeWhale.png'
-// import mobileAd from 'assets/nodeWhaleWide.png'
-// import ReactGA from 'react-ga4'
+import mobileAd from 'assets/taco_ad.png'
+import ReactGA from 'react-ga4'
 import './Footer.scss'
 
 export const Footer = ({isMobile}: {isMobile: boolean}) => {
@@ -11,6 +10,7 @@ export const Footer = ({isMobile}: {isMobile: boolean}) => {
   return (
     <div className="Footer">
       <FlexBox flexDirection='column' gap=".5rem">
+        <FooterAd isMobile={isMobile} />
         <FlexBox gap='1rem' alignItems="center" justifyContent="space-between">
           <span className='Footer__text'><strong>These are not guaranteed rewards.</strong> Please do your own research and invest at your own risk. This is not financial advice.</span>
           <a href="https://www.youtube.com/channel/UC73GDN0hsd1DpIEUjpOjoww" target="_blank" rel="noreferrer">
@@ -37,24 +37,24 @@ const YoutubeLogo = () => (
   </svg>
 )
 
-// const FooterAd = ({isMobile}: {isMobile: boolean}) => {
-//   const handleAdClick = () => {
-//     ReactGA.event({
-//       category: 'Ad',
-//       action: 'Click',
-//     })
-//   }
-//   return (
-//     <a onClick={handleAdClick} className='Footer__ad-link' href="https://nodewhales.com/" target="_blank" rel="noreferrer">
-//       {!isMobile ? (
-//           <>
-//             <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
-//             <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
-//             <img className='Footer__ad' src={desktopAd} alt="node whale ad" />
-//           </>
-//       ) : (
-//         <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
-//       )}
-//     </a>
-//   )
-// }
+const FooterAd = ({isMobile}: {isMobile: boolean}) => {
+  const handleAdClick = () => {
+    ReactGA.event({
+      category: 'Ad',
+      action: 'Click',
+    })
+  }
+  return (
+    <a onClick={handleAdClick} className='Footer__ad-link' href="https://twitter.com/eltaconode" target="_blank" rel="noreferrer">
+      {/* {!isMobile ? (
+          <>
+            <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
+            <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
+          </>
+      ) : (
+        <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
+        )} */}
+        <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
+    </a>
+  )
+}
