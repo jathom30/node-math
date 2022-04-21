@@ -45,7 +45,7 @@ const FooterAd = ({isMobile}: {isMobile: boolean}) => {
     })
   }
   return (
-    <a onClick={handleAdClick} className='Footer__ad-link' href="https://twitter.com/eltaconode" target="_blank" rel="noreferrer">
+    <a onClick={handleAdClick} className='Footer__ad-link' href="https://eltaconode.com" target="_blank" rel="noreferrer">
       {/* {!isMobile ? (
           <>
             <img className='Footer__ad' src={mobileAd} alt="node whale ad" />
