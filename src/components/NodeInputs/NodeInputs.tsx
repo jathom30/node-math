@@ -45,25 +45,6 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
     return dailyEarnings * days
   }
 
-  // const priceData = [
-  //   {
-  //     title: 'compound tax',
-  //     value: compountTax, 
-  //   },
-  //   {
-  //     title: 'claim tax',
-  //     value: tax, 
-  //   },
-  //   {
-  //     title: 'sales tax',
-  //     value: salesTax, 
-  //   },
-  //   {
-  //     title: 'node fee',
-  //     value: fee, 
-  //   },
-  // ]
-
   const handleRewardTypeChange = () => {
     // if switching to percent based reward
     if (tokenReward) {
@@ -78,7 +59,7 @@ export const NodeInputs: React.FC<{id: string}> = ({id}) => {
 
   return (
     <div className="NodeInputs">
-      <FlexBox flexDirection='column' gap="1rem">
+      <FlexBox gap="1rem">
         <FlexBox flexDirection='column' gap="1rem">
           <Input
             label='[Required] Node count'

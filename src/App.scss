@@ -39,9 +39,7 @@ body {
   }
   &__droppable {
     display: flex;
-    &--columns {
-      flex-direction: column;
-    }
+    flex-direction: column;
   }
   &__draggable {
     width: 100%;

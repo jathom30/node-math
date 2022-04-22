@@ -14,8 +14,8 @@ export const NodeContainer: React.FC<{
   id: string
   onRemove: (id: string) => void
   onCopy: (newId: string, referenceId: string) => void
-  canRemove: boolean
-}> = ({id, onRemove, onCopy, canRemove, children}) => {
+  isMobile: boolean
+}> = ({id, onRemove, onCopy, isMobile, children}) => {
   const [isCollapsed, setIsCollapsed] = useRecoilState(collapsedAtom(id))
   const [tokenId, setTokenId] = useRecoilState(tokenIdAtom(id))
   const [inTotal, setInTotal] = useRecoilState(includeInTotalAtom(id))
@@ -31,7 +31,7 @@ export const NodeContainer: React.FC<{
   }
 
   return (
-    <div className="NodeContainer">
+    <div className={`NodeContainer ${!isMobile ? 'NodeContainer--is-desktop' : ''}`}>
       <div className="NodeContainer__header">
         <FlexBox justifyContent="space-between">
           {children}
@@ -56,19 +56,10 @@ export const NodeContainer: React.FC<{
           <TokenSearch onChange={handleSelectToken} />
         </Box>
       ) : (
-        <CollapsibleCard
-          isCollapsed={isCollapsed}
-          onChange={setIsCollapsed}
-          header={
-            <Box paddingTop="1rem">
-              <TokenDisplay id={id} isCollapsed={isCollapsed} />
-            </Box>
-          }
-        >
-          <Box padding='1rem'>
-            <NodeInputs id={id} />
-          </Box>
-        </CollapsibleCard>
+        <FlexBox padding='1rem' gap="2rem" flexDirection={isMobile ? 'column' : 'row'}>
+          <TokenDisplay id={id} isCollapsed={isCollapsed} />
+          <NodeInputs id={id} />
+        </FlexBox>
       )}
     </div>
   )

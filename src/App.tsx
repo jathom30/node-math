@@ -121,9 +121,9 @@ function App() {
       >
         <div className={`App__wrapper ${columnView ? 'App__wrapper--columns': ''}`}>
           <DragDropContext onDragEnd={handleDradEnd}>
-            <Droppable droppableId='droppable' direction={columnView ? 'vertical' : 'horizontal'}>
+            <Droppable droppableId='droppable' direction='vertical'>
               {(provided) => (
-                <div className={`App__droppable ${columnView ? 'App__droppable--columns' : ''}`} ref={provided.innerRef} {...provided.droppableProps}>
+                <div className={`App__droppable`} ref={provided.innerRef} {...provided.droppableProps}>
                     {nodeIds.map((nodeId, i) => (
                       <Draggable key={nodeId} draggableId={nodeId} index={i}>
                         {(provided) => (
@@ -132,7 +132,7 @@ function App() {
                               id={nodeId}
                               onRemove={handleRemoveNode}
                               onCopy={handleCopyNode}
-                              canRemove={nodeIds.length > 1}
+                              isMobile={columnView}
                             >
                               <div className='NodeContainer__btn NodeContainer__btn--handle' {...provided.dragHandleProps}><FontAwesomeIcon icon={faGripHorizontal} /></div>
                             </NodeContainer>
