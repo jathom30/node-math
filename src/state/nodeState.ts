@@ -74,10 +74,10 @@ export const dailyNodeEarnings = selectorFamily({
     const daily = get(nodeRewards(id))
     const tokenRewards = get(tokenRewardAtom(id))
 
-    // reward can be a percentage or token value...
-    // ... if token value, do no additional math...
-    // ... if percentage, divide by 100
-    const dailyReward = tokenRewards ? daily : (daily / 100)
+    // reward can be a percentage or token value
+    // ...I don't know why this math needs to be done?
+    const dailyReward = tokenRewards ? (daily * 10) : (daily / 10)
+    console.log(daily, dailyReward)
 
     const nodecount = get(nodeCount(id))
     const monthlyFee = get(nodeFee(id))
