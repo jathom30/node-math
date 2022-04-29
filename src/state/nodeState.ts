@@ -68,6 +68,7 @@ export const dailyNodeEarnings = selectorFamily({
     const marketPrice = get(tokenAtom(id))?.market_data.current_price.btc || 0
     const currentPrice = get(userSetPrice(id))
     const exchange = get(exchangeAtom)
+    const tokensPerNode = get(nodeCost(id))
     // if user has set price, divide by exchange rate to make sure math is done in BTC...
     // ...else use marketPrice (which is always in BTC)
     const priceInBTC = currentPrice ? currentPrice / (exchange?.value || 1) : marketPrice
@@ -76,8 +77,10 @@ export const dailyNodeEarnings = selectorFamily({
 
     // reward can be a percentage or token value...
     // ... if token value, do no additional math...
-    // ... if percentage, divide by 100
-    const dailyReward = tokenRewards ? daily : (daily / 100)
+    // ... if percentage, divide by 100 (to get percent)...
+    // ...and multiple by the number of tokens per node because...
+    // ...percent based rewards are based on node and not token price
+    const dailyReward = tokenRewards ? daily : (daily / 100 * tokensPerNode)
 
     const nodecount = get(nodeCount(id))
     const monthlyFee = get(nodeFee(id))
